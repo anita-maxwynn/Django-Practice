@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Student List - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="color: #2d3748; margin: 0;">📋 All Students</h2>
+        <a href="{% url 'student_create' %}" class="btn btn-primary">➕ Add New Student</a>
+    </div>
+
+    {% if students %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <th style="padding: 15px; text-align: left; font-weight: 600;">Serial_Number</th>
+                        <th style="padding: 15px; text-align: left; font-weight: 600;">👤 Name</th>
+                        <th style="padding: 15px; text-align: left; font-weight: 600;">🎂 Age</th>
+                        <th style="padding: 15px; text-align: left; font-weight: 600;">📧 Email</th>
+                        <th style="padding: 15px; text-align: center; font-weight: 600;">⚡ Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr style="border-bottom: 1px solid #e2e8f0; transition: background-color 0.3s ease;">
+                        <td style="padding: 15px; font-weight: 500;">{{ forloop.counter }}</td>
+                        <td style="padding: 15px; font-weight: 500; color: #2d3748;">{{ student.name }}</td>
+                        <td style="padding: 15px; color: #4a5568;">{{ student.age }}</td>
+                        <td style="padding: 15px; color: #4a5568;">{{ student.email }}</td>
+                        <td style="padding: 15px; text-align: center;">
+                            <a href="{% url 'student_detail' student.id %}" class="btn btn-primary" style="margin: 2px;">👁️ View</a>
+                            <a href="{% url 'student_update' student.id %}" class="btn btn-success" style="margin: 2px;">✏️ Edit</a>
+                            <a href="{% url 'student_delete' student.id %}" class="btn btn-danger" style="margin: 2px;">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 20px; text-align: center; color: #718096;">
+            <p>📊 Total Students: <strong>{{ students.count }}</strong></p>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 60px 20px; color: #718096;">
+            <h3 style="margin-bottom: 20px;">📭 No Students Found</h3>
+            <p style="margin-bottom: 30px;">You haven't added any students yet. Start by creating your first student record!</p>
+            <a href="{% url 'student_create' %}" class="btn btn-primary">➕ Add Your First Student</a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Site{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-white shadow p-4">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold">My Django Site</h1>
+        </div>
+        <nav class="container mx-auto mt-4">
+            <ul class="flex space-x-4">
+                <li><a href="{% url 'home' %}" class="text-blue-500 hover:underline">Home</a></li>
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}" class="text-blue-500 hover:underline">Login</a></li>
+                <li><a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register</a></li>
+                <li><a href="{% url 'forgot_password' %}" class="text-blue-500 hover:underline">Forgot Password</a></li>
+                {% else %}
+                <li><a href="{% url 'change_password' %}" class="text-blue-500 hover:underline">Change Password</a></li>
+                <li><a href="{% url 'logout' %}" class="text-blue-500 hover:underline">Logout</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto my-10">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm py-4">
+        &copy; 2025 My Site
+    </footer>
+</body>
+</html>

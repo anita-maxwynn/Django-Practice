@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Result</title>
+</head>
+<body>
+
+    <!-- Show flash messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li style="color: green;">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="stu_class" placeholder="Class" required>
+        <input type="number" name="marks" placeholder="Marks" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>All Results:</h2>
+    <table border="1">
+        <tr>
+            <th>Class</th>
+            <th>Marks</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.stu_class }}</td>
+            <td>{{ result.marks }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No results found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

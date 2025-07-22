@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Management System{% endblock %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e53e3e;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #38a169;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #2f855a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4a5568;
+            transform: translateY(-2px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #c6f6d5;
+            color: #2f855a;
+            border: 1px solid #9ae6b4;
+        }
+        
+        .alert-danger {
+            background: #fed7d7;
+            color: #c53030;
+            border: 1px solid #fc8181;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Student Management System</h1>
+            <p>Manage student records efficiently</p>
+        </div>
+        
+        <div class="nav">
+            <a href="{% url 'student_list' %}">📋 All Students</a>
+            <a href="{% url 'student_create' %}">➕ Add Student</a>
+        </div>
+        
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

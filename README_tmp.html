@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="day1">day1</h1>
+<h1 id="introduction-to-django">Introduction to Django:-</h1>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day1/image.png" alt="alt text"></p>
+<p>It follows MVT architecture(Model View Template)</p>
+<h2 id="features-and-advantage">Features and Advantage:-</h2>
+<ul>
+<li>Built in Admin Interface</li>
+<li>ORM</li>
+<li>Authentication System</li>
+<li>Versality</li>
+<li>Security</li>
+</ul>
+<h1 id="django-prerequistie">Django Prerequistie</h1>
+<ul>
+<li>python 3.10 or Higher</li>
+<li>PIP</li>
+<li>Text Editor</li>
+<li>Web Browser</li>
+</ul>
+<h1 id="how-to-insstall-django">How to Insstall Django????</h1>
+<ul>
+<li>why use virtual Environment
+<ul>
+<li>Well the packages and libraries used in the project most of the times needed to be kept separate. With Venv we can keep them separated</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Installation process:-</p>
+<pre class="hljs"><code><div>python -m venv &lt;Virtual env name&gt;
+</div></code></pre>
+<p>Activation Process:-</p>
+<pre class="hljs"><code><div>source ./&lt;venv name&gt;/bin/activate
+</div></code></pre>
+<p>and only then  You should download django</p>
+<pre class="hljs"><code><div>pip install django
+</div></code></pre>
+<p>To check The downloaded libraries(only in python)</p>
+<pre class="hljs"><code><div>pip freeze
+</div></code></pre>
+<h1 id="how-to-create-django-project">How to create django project:-</h1>
+<p>A django project may contain multiple project application, Which means a group of application and files is called as Django Project.
+An application is a part of Django Project.</p>
+<h2 id="how-to-start-a-project">How to start a project</h2>
+<pre class="hljs"><code><div>djang-admin startproject projectname
+</div></code></pre>
+<h1 id="directory-structure">Directory Structure:-</h1>
+<pre class="hljs"><code><div>projectname/               ← Outer Project Directory
+│
+├── manage.py              ← Command-line utility for project management
+│
+└── projectname/           ← Inner Project Directory (same name as project)
+    ├── __init__.py        ← Initializes this directory as a Python package
+    ├── settings.py        ← Main configuration file
+    │                        - Hosts, security settings, debug mode
+    │                        - Installed apps
+    │                        - Middleware
+    │                        - Template and static directory settings
+    ├── urls.py            ← Declares root-level URL routes
+    ├── wsgi.py            ← WSGI entry point (for production servers)
+    └── asgi.py            ← ASGI entry point (for async features)
+</div></code></pre>
+<h1 id="day2">day2</h1>
+<h1 id="how-to-run-django-project-on-a-specific-port">How to run Django Project on a specific port:-</h1>
+<p><u>Default</u></p>
+<pre class="hljs"><code><div>python manage.py runserver
+</div></code></pre>
+<p><u>To run it on a specific port:-</u></p>
+<pre class="hljs"><code><div>python manage.py runserver &lt;port number&gt;
+</div></code></pre>
+<hr>
+<h1 id="how-to-create-django-applications">How to create django Applications</h1>
+<pre class="hljs"><code><div>django-admin startapp &lt;appname&gt;
+</div></code></pre>
+<h2 id="why-do-we-even-need-applications-in-django">why do we even need applications in django?</h2>
+<ol>
+<li>Separation of Concerns</li>
+<li>Reusability</li>
+<li>Better Testing</li>
+<li>Team collaboration</li>
+<li>Pluggability</li>
+</ol>
+<hr>
+<h1 id="function-based-view">Function Based View</h1>
+<ul>
+<li>write functions in view.py</li>
+<li>add them in urls.py with the urls using path</li>
+<li>if we are creating multiple apps we have to use them with <code>as</code></li>
+</ul>
+<hr>
+<h1 id="url-pattern">URL PATTERN</h1>
+<ul>
+<li>path function -&gt; It needs url,view function, kwargs, name</li>
+<li>Best option -&gt;
+<ul>
+<li>set urls.py in the separate apps and combine them in the project's url file</li>
+</ul>
+</li>
+</ul>
+<h1 id="templates">Templates</h1>
+<ul>
+<li>Django works on mvt(Model -&gt; View -&gt; Template) architecture</li>
+<li>we use render for it</li>
+<li>Best practice is to have them separately in each application</li>
+</ul>
+<hr>
+<h1 id="dynamic-template">Dynamic template</h1>
+<ul>
+<li>here we can use jinja templates</li>
+<li>we have to sent a context (a dictionary)</li>
+</ul>
+<hr>
+<h1 id="django-template-language">Django Template language</h1>
+<pre class="hljs"><code><div> It's simple yet powerful, allowing HTML + Python-like logic inside templates.
+ Alternatives like Jinja2 can be used, but require additional configuration.
+</div></code></pre>
+<ul>
+<li>
+<p>Basic Setup:</p>
+<ul>
+<li>Django project and app creation (<code>startproject</code>, <code>startapp</code>).</li>
+<li>Register the app in <code>INSTALLED_APPS</code> in <code>settings.py</code>.</li>
+<li>Create a <code>templates</code> directory inside the app folder.</li>
+<li>Structure: <code>app/templates/app_name/template.html</code>.</li>
+</ul>
+</li>
+<li>
+<p>Using Views with Templates:</p>
+<ul>
+<li>Views use <code>render(request, template_name, context)</code> to pass data to templates.</li>
+<li>Context is a dictionary of variables passed to the template.</li>
+</ul>
+</li>
+<li>
+<p>Variable Display in Templates:</p>
+<ul>
+<li>Syntax: <code>{{ variable_name }}</code> to display variables.</li>
+<li>You can pass complex dictionaries and access nested data.</li>
+</ul>
+</li>
+<li>
+<p>Filters in Templates:</p>
+<ul>
+<li>Filters modify variable output. Examples:
+<ul>
+<li><code>{{ name|lower }}</code> → lowercase</li>
+<li><code>{{ name|upper }}</code> → uppercase</li>
+<li><code>{{ name|truncatewords:3 }}</code> → limit to 3 words</li>
+<li><code>{{ name|length }}</code> → shows character count</li>
+<li><code>{{ name|default:&quot;Guest&quot; }}</code> → default value if variable is empty</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Date &amp; Time Formatting:</p>
+<ul>
+<li>Use <code>{{ date_var|date:&quot;D d M Y&quot; }}</code> for custom formats</li>
+<li>Use <code>{{ time_var|time:&quot;H:i&quot; }}</code> for time</li>
+<li>Built-in filters like <code>short_date_format</code> and <code>short_time_format</code> available.</li>
+</ul>
+</li>
+<li>
+<p>Float Formatting (Monetary/Precision Control):</p>
+<ul>
+<li>Use <code>{{ price|floatformat:2 }}</code> to round to 2 decimal places</li>
+<li>Supports positive, zero, and negative precision</li>
+</ul>
+</li>
+<li>
+<p>Conditionals: if, if-else, if-elif-else:</p>
+<ul>
+<li>{% if variable %}...{% endif %}</li>
+<li>{% if var == 'value' %}...{% else %}...{% endif %}</li>
+<li>Support for and, or, not, and comparisons (==, !=, &lt;, &gt;)</li>
+</ul>
+</li>
+</ul>
+<h1 id="template-inheritance">Template Inheritance</h1>
+<ul>
+<li>Here we use it to redduce code redundancy</li>
+<li>to use tratic files we have to add {% load static %}</li>
+</ul>
+<h1 id="day3">day3</h1>
+<h1 id="how-to-add-bootstrap">How to add bootstrap</h1>
+<ol>
+<li>Using CDN link</li>
+<li>Using pip library
+<blockquote>
+<p>Then you have to declare it in the <code>settings.py</code> as an installed app and in the <code>base.html</code> as <code>{% load django_bootstrap5 %}</code></p>
+</blockquote>
+</li>
+</ol>
+<h1 id="how-to-use-tailwind-css">How to use Tailwind CSS</h1>
+<p><s>We have to use node
+There's also a pip library which we can use
+Then we have to init it as an app
+and declare it in settings.py</s> [old process]</p>
+<ol>
+<li>First, set up a new folder.</li>
+<li>Then run:<pre class="hljs"><code><div>npm install tailwindcss @tailwindcss/cli
+</div></code></pre>
+</li>
+<li>Inside that folder, create a new CSS file and add:<pre class="hljs"><code><div><span class="hljs-keyword">@import</span> <span class="hljs-string">"tailwindcss"</span>;
+</div></code></pre>
+</li>
+<li>Finally, run:<pre class="hljs"><code><div>npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
+</div></code></pre>
+</li>
+<li>start using css in your html</li>
+</ol>
+<h1 id="hyperlink">Hyperlink</h1>
+<p>In url.py we set names to urls. We use them to create hyperlinks in the frontend
+The process is to use &quot;{% url '<urlname>' %}&quot; in the href</p>
+<h1 id="ormobject-relational-manner">ORM(Object Relational Manner)</h1>
+<p>it provides the interaction between the application and the database!
+<a href="image.png">alt text</a>
+In django's orm it let's us write sql quaries in python</p>
+<h1 id="model">model</h1>
+<p>A model in Django is a Python class that represents a database table.
+It is the single, definitive source of information about your data.
+It contains the essential fields and behaviors of the data you're storing.
+Models define the structure of stored data, including field types, defaults, options, etc.
+Each model maps to a single database table.</p>
+<h1 id="retriving-data-from-models">retriving data from models</h1>
+<pre class="hljs"><code><div>val = Modelname.objects.all() <span class="hljs-comment"># to get all</span>
+</div></code></pre>
+<pre class="hljs"><code><div>val = Modelname.objects.get(seatsching_parameter = <span class="hljs-string">"something"</span>) <span class="hljs-comment"># to get filtered</span>
+</div></code></pre>
+<h1 id="superuser">Superuser</h1>
+<pre class="hljs"><code><div>python manage.py createsuperuser
+</div></code></pre>
+<blockquote>
+<p>A Django superuser is a special kind of user account that has full administrative access to all parts of your Django project — especially the Django admin panel.</p>
+</blockquote>
+<h2 id="superuser-permissions">Superuser Permissions:</h2>
+<ul>
+<li>Can log into the admin panel (/admin/).</li>
+<li>Can view, add, edit, delete any model's data.</li>
+<li>Can create or manage other users (including staff and other superusers).</li>
+<li>Has all permissions by default, without needing to be explicitly assigned.</li>
+</ul>
+<h1 id="day4">day4</h1>
+<h1 id="register-class-in-admin-panel">Register class in Admin Panel</h1>
+<ul>
+<li>Already did yesterday</li>
+</ul>
+<h1 id="customize-models-look-on-admin-panel">Customize model's look on admin panel</h1>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> admin
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Profile, Result
+<span class="hljs-comment"># Register your models here.</span>
+admin.site.register(Result)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProfileAdmin</span><span class="hljs-params">(admin.ModelAdmin)</span>:</span>
+    list_display = (<span class="hljs-string">'id'</span>,<span class="hljs-string">'name'</span>, <span class="hljs-string">'roll'</span>, <span class="hljs-string">'email'</span>, <span class="hljs-string">'city'</span>)
+    search_fields = (<span class="hljs-string">'name'</span>, <span class="hljs-string">'roll'</span>)
+    list_filter = (<span class="hljs-string">'city'</span>,)
+
+admin.site.register(Profile, ProfileAdmin)
+</div></code></pre>
+<h1 id="form">Form</h1>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django <span class="hljs-keyword">import</span> forms
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Profile, Result
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RegistrationForm</span><span class="hljs-params">(forms.Form)</span>:</span>
+    name = forms.CharField(max_length=<span class="hljs-number">100</span>, required=<span class="hljs-literal">True</span>)
+    roll = forms.IntegerField(required=<span class="hljs-literal">True</span>)
+    email = forms.EmailField(required=<span class="hljs-literal">True</span>)
+    city = forms.CharField(max_length=<span class="hljs-number">100</span>, required=<span class="hljs-literal">True</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span><span class="hljs-params">(self)</span>:</span>
+        profile = Profile(
+            name=self.cleaned_data[<span class="hljs-string">'name'</span>],
+            roll=self.cleaned_data[<span class="hljs-string">'roll'</span>],
+            email=self.cleaned_data[<span class="hljs-string">'email'</span>],
+            city=self.cleaned_data[<span class="hljs-string">'city'</span>]
+        )
+        profile.save()
+        <span class="hljs-keyword">return</span> profile
+</div></code></pre>
+<p>we can also show them as
+- <code>{{form.as_ul}}</code> for ul
+- <code>{{form.as_table}}</code> for table
+- <code>{{form.as_p}}</code> for in p
+- <code>{{form.&lt;tag name&gt;}}</code> for for specified input</p>
+<h1 id="custom-formmannual-one">Custom form(Mannual One)</h1>
+<p>Have done it before</p>
+<h1 id="form-fields-types">Form fields Types</h1>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day4/image.png" alt="alt text"></p>
+<h1 id="built-in-validators">Built in validators</h1>
+<ul>
+<li>
+<pre class="hljs"><code><div>  <span class="hljs-keyword">from</span> django <span class="hljs-keyword">import</span> forms
+  <span class="hljs-keyword">from</span> django.core <span class="hljs-keyword">import</span> validators
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check</span><span class="hljs-params">(value)</span>:</span>
+      <span class="hljs-keyword">if</span> value[<span class="hljs-number">0</span>]!=<span class="hljs-string">'s'</span>:
+          <span class="hljs-keyword">raise</span> forms.ValidationError(<span class="hljs-string">'Name should start with "s"'</span>)
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Registration</span> <span class="hljs-params">(forms.Form)</span>:</span>
+      name = forms.CharField(validators=[validators.
+      MaxLengthValidator (<span class="hljs-number">10</span>), validators.MinLength Validator()])
+      email = forms. EmailField(validators =[check])
+      password = forms.CharField(widget=forms.Password Input)
+</div></code></pre>
+</li>
+<li></li>
+</ul>
+<h1 id="day5">day5</h1>
+<h2 id="%E2%9C%85-django-modelform-template">✅ Django ModelForm Template</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django <span class="hljs-keyword">import</span> forms
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> &lt;ModelName&gt;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RegistrationForm</span><span class="hljs-params">(forms.ModelForm)</span>:</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Meta</span>:</span>
+        model = &lt;ModelName&gt;
+        fields = [<span class="hljs-string">'&lt;field1&gt;'</span>, <span class="hljs-string">'&lt;field2&gt;'</span>]  <span class="hljs-comment"># List of field names</span>
+
+        labels = {
+            <span class="hljs-string">'&lt;field_name&gt;'</span>: <span class="hljs-string">'Label you want to display'</span>,
+        }
+
+        error_messages = {
+            <span class="hljs-string">'&lt;field_name&gt;'</span>: {
+                <span class="hljs-string">'required'</span>: <span class="hljs-string">'This field is required.'</span>,
+                <span class="hljs-string">'invalid'</span>: <span class="hljs-string">'Enter a valid value.'</span>,
+            }
+        }
+
+        widgets = {
+            <span class="hljs-string">'name'</span>: forms.TextInput(attrs={
+                <span class="hljs-string">'class'</span>: <span class="hljs-string">'your-css-class'</span>,
+                <span class="hljs-string">'placeholder'</span>: <span class="hljs-string">'Your Placeholder'</span>
+            }),
+        }
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%93%8C-notes">📌 Notes</h2>
+<ul>
+<li>
+<p>The <strong>form fields' data types</strong> are automatically inferred from the model fields.</p>
+</li>
+<li>
+<p>For special fields:</p>
+<ul>
+<li><code>ForeignKey</code> → <code>ModelChoiceField</code></li>
+<li><code>ManyToManyField</code> → <code>ModelMultipleChoiceField</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="%F0%9F%A7%AC-form-inheritance">🧬 Form Inheritance</h2>
+<p>You can inherit from an existing form like this:</p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewForm</span><span class="hljs-params">(OldForm)</span>:</span>
+    <span class="hljs-comment"># Add or override fields here</span>
+</div></code></pre>
+<hr>
+<h2 id="%F0%9F%94%8D-filtering-querysets-in-forms">🔍 Filtering Querysets in Forms</h2>
+<pre class="hljs"><code><div>packagename/
+├── <span class="hljs-strong">__init__</span>.py       # Declare it as a package
+├── customfilter.py   # Your custom filters go here
+</div></code></pre>
+<blockquote>
+<p>customfilter.py</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django <span class="hljs-keyword">import</span> templates
+register =template.Libarry()
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">myreplace</span><span class="hljs-params">(value,arg)</span>:</span>
+    <span class="hljs-keyword">return</span> value.replace(arg ,<span class="hljs-string">'rplacing this word'</span>)
+register.filter(<span class="hljs-string">'customfiltername'</span>,myreplace)
+</div></code></pre>
+<pre class="hljs"><code><div>{% load python_file_name %} # at the top of the file
+{{data|customfiltername}}
+</div></code></pre>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day5/image.png" alt="alt text"></p>
+<h2 id="dynamic-url">Dynamic Url</h2>
+<p>in the url file</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> views
+
+urlpatterns = [
+    path(<span class="hljs-string">'dynamic/&lt;int:pk&gt;/'</span>, views.func_name, name=<span class="hljs-string">'dynamic'</span>)
+]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">func_name</span><span class="hljs-params">(request, pk)</span>:</span>
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'htmlpage.html'</span>, {<span class="hljs-string">'pk_value'</span>: pk})
+</div></code></pre>
+<h1 id="message">Message</h1>
+<p>It is used at the time of debug and development
+at the time of production it is removed</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> messages
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">home</span> <span class="hljs-params">(request)</span>:</span>
+    messages.add_message(request,messages.SUCCESS,<span class="hljs-string">'your custom message'</span>)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'student/home.html'</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registration</span> <span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'student/registration.html'</span>)
+</div></code></pre>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day5/image-1.png" alt="Messages"></p>
+<blockquote>
+<p><em>#Disclaimer:-</em> Debug is usually set at level 10 and the default level is at 20 that's why it's doesn't show up at first
+That's why we have to set it by <code>messages.set_level(request,messages.DEBUG)</code></p>
+</blockquote>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day5/image-2.png" alt=""></p>
+<blockquote>
+<p>settings.py
+We can have custom tags too
+for css purposes</p>
+</blockquote>
+<h1 id="day6">day6</h1>
+<h1 id="day-6-django-project">Day 6 Django Project</h1>
+<h2 id="overview">Overview</h2>
+<p>This project demonstrates user authentication and account management features using Django. Tailwind CSS is used for modern UI styling.</p>
+<h2 id="features-implemented">Features Implemented</h2>
+<ul>
+<li>User registration</li>
+<li>User login/logout</li>
+<li>Password reset and change functionality</li>
+<li>Authentication-based navigation (shows different menu items for logged-in/out users)</li>
+<li>Responsive layout using Tailwind CSS</li>
+<li>Organized Django app structure (<code>account</code> app)</li>
+<li>Custom base template for consistent site layout</li>
+</ul>
+<h2 id="file-structure">File Structure</h2>
+<ul>
+<li><code>account/</code> app: Handles user-related logic (models, views, forms, templates)</li>
+<li><code>templates/base.html</code>: Main site template with navigation and content blocks</li>
+<li><code>day6/settings.py</code>: Django settings for the project</li>
+<li><code>manage.py</code>: Django management script</li>
+<li><code>db.sqlite3</code>: SQLite database</li>
+</ul>
+<h2 id="how-to-run">How to Run</h2>
+<ol>
+<li>Install dependencies from <code>requirements.txt</code></li>
+<li>Run migrations: <code>python manage.py migrate</code></li>
+<li>Start the server: <code>python manage.py runserver</code></li>
+</ol>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Navigation adapts based on authentication status</li>
+<li>Password management (reset/change) is available</li>
+<li>Tailwind CSS is loaded via CDN for styling</li>
+</ul>
+<h2 id="custom-user-model--manager">Custom User Model &amp; Manager</h2>
+<ul>
+<li>Created a custom <code>User</code> model inheriting from <code>AbstractBaseUser</code> with fields for email, first/last name, and flags for staff/superuser/seller/customer.</li>
+<li>Implemented a custom <code>UserManager</code> to handle user and superuser creation, enforcing email uniqueness and password hashing.</li>
+</ul>
+<h2 id="authentication-processes">Authentication Processes</h2>
+<ul>
+<li><strong>Registration:</strong>
+<ul>
+<li>Used a custom <code>RegistrationForm</code> to collect user info and passwords.</li>
+<li>On registration, user is created inactive and sent an activation email with a tokenized link.</li>
+</ul>
+</li>
+<li><strong>Login:</strong>
+<ul>
+<li>Used a custom <code>LoginForm</code> to validate credentials and authenticate users by email/password.</li>
+</ul>
+</li>
+<li><strong>Change Password:</strong>
+<ul>
+<li>Used a custom <code>ChangePasswordForm</code> to verify old password and set a new one.</li>
+</ul>
+</li>
+<li><strong>Forgot Password:</strong>
+<ul>
+<li>User submits email, receives a reset link with a token via email if the account exists.</li>
+</ul>
+</li>
+</ul>
+<h2 id="email-activation--password-reset">Email Activation &amp; Password Reset</h2>
+<ul>
+<li>Used Django's <code>urlsafe_base64_encode</code>/<code>decode</code> and <code>default_token_generator</code> to securely generate and verify activation/reset tokens.</li>
+<li>Sent emails asynchronously using a custom <code>send_async_email</code> utility (threaded, uses Django's <code>send_mail</code>).</li>
+<li>Activation and reset links include encoded user ID and token, which are decoded and verified in the respective views.</li>
+</ul>
+<h2 id="security--decryption">Security &amp; Decryption</h2>
+<ul>
+<li>User ID is encoded with <code>urlsafe_base64_encode</code> and decoded with <code>urlsafe_base64_decode</code>.</li>
+<li>Token is generated and checked using Django's built-in token generator for secure activation/reset.</li>
+<li>All password changes and resets use Django's password hashing.</li>
+</ul>
+<h2 id="templates--navigation">Templates &amp; Navigation</h2>
+<ul>
+<li>Navigation adapts based on authentication status (login/register/forgot password for guests, change password/logout for users).</li>
+<li>All forms and flows are handled with custom templates for a clean UI.</li>
+</ul>
+<h2 id="example-code-snippets">Example Code Snippets</h2>
+<h3 id="custom-user-model--manager">Custom User Model &amp; Manager</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-keyword">from</span> django.contrib.auth.models <span class="hljs-keyword">import</span> AbstractBaseUser, BaseUserManager
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserManager</span><span class="hljs-params">(BaseUserManager)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user</span><span class="hljs-params">(self, email, password=None)</span>:</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> email:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'The Email field must be set'</span>)
+        user = self.model(email=self.normalize_email(email))
+        user.set_password(password)
+        user.save(using=self._db)
+        <span class="hljs-keyword">return</span> user
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_superuser</span><span class="hljs-params">(self, email, password=None, **extra_fields)</span>:</span>
+        extra_fields.setdefault(<span class="hljs-string">'is_staff'</span>, <span class="hljs-literal">True</span>)
+        extra_fields.setdefault(<span class="hljs-string">'is_superuser'</span>, <span class="hljs-literal">True</span>)
+        user = self.create_user(email, password)
+        user.is_staff = <span class="hljs-literal">True</span>
+        user.is_superuser = <span class="hljs-literal">True</span>
+        user.save(using=self._db)
+        <span class="hljs-keyword">return</span> user
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span><span class="hljs-params">(AbstractBaseUser)</span>:</span>
+    email = models.EmailField(unique=<span class="hljs-literal">True</span>)
+    first_name = models.CharField(max_length=<span class="hljs-number">30</span>, blank=<span class="hljs-literal">True</span>)
+    last_name = models.CharField(max_length=<span class="hljs-number">30</span>, blank=<span class="hljs-literal">True</span>)
+    is_active = models.BooleanField(default=<span class="hljs-literal">False</span>)
+    is_staff = models.BooleanField(default=<span class="hljs-literal">False</span>)
+    is_superuser = models.BooleanField(default=<span class="hljs-literal">False</span>)
+    objects = UserManager()
+    USERNAME_FIELD = <span class="hljs-string">'email'</span>
+</div></code></pre>
+<h3 id="registration--activation">Registration &amp; Activation</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.utils.http <span class="hljs-keyword">import</span> urlsafe_base64_encode, urlsafe_base64_decode
+<span class="hljs-keyword">from</span> django.utils.encoding <span class="hljs-keyword">import</span> force_bytes, force_str
+<span class="hljs-keyword">from</span> django.contrib.auth.tokens <span class="hljs-keyword">import</span> default_token_generator
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> reverse
+<span class="hljs-keyword">from</span> .utils <span class="hljs-keyword">import</span> send_async_email
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># ...</span>
+    user = form.save(commit=<span class="hljs-literal">False</span>)
+    user.set_password(form.cleaned_data[<span class="hljs-string">'password1'</span>])
+    user.save()
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    activation_link = reverse(<span class="hljs-string">'activate'</span>, kwargs={<span class="hljs-string">'uidb64'</span>: uidb64, <span class="hljs-string">'token'</span>: token})
+    activation_url = <span class="hljs-string">f'<span class="hljs-subst">{settings.SITE_DOMAIN}</span><span class="hljs-subst">{activation_link}</span>'</span>
+    send_async_email(<span class="hljs-string">'Activate Your Account'</span>, <span class="hljs-string">f'Click: <span class="hljs-subst">{activation_url}</span>'</span>, user.email)
+</div></code></pre>
+<h3 id="login">Login</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># ...</span>
+    user = authenticate(email=email, password=password)
+    <span class="hljs-keyword">if</span> user <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+        auth_login(request, user)
+        <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'home'</span>)
+</div></code></pre>
+<h3 id="change-password">Change Password</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># forms.py</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChangePasswordForm</span><span class="hljs-params">(forms.Form)</span>:</span>
+    old_password = forms.CharField(widget=forms.PasswordInput)
+    new_password1 = forms.CharField(widget=forms.PasswordInput)
+    new_password2 = forms.CharField(widget=forms.PasswordInput)
+    <span class="hljs-comment"># ...</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span><span class="hljs-params">(self, commit=True)</span>:</span>
+        self.user.set_password(self.cleaned_data[<span class="hljs-string">'new_password1'</span>])
+        <span class="hljs-keyword">if</span> commit:
+            self.user.save()
+        <span class="hljs-keyword">return</span> self.user
+</div></code></pre>
+<h3 id="forgot-password--reset">Forgot Password &amp; Reset</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forgot_password</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># ...</span>
+    user = User.objects.get(email=email)
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    reset_link = reverse(<span class="hljs-string">'reset_password'</span>, kwargs={<span class="hljs-string">'uidb64'</span>: uidb64, <span class="hljs-string">'token'</span>: token})
+    reset_url = <span class="hljs-string">f'<span class="hljs-subst">{settings.SITE_DOMAIN}</span><span class="hljs-subst">{reset_link}</span>'</span>
+    send_async_email(<span class="hljs-string">'Reset Your Password'</span>, <span class="hljs-string">f'Click: <span class="hljs-subst">{reset_url}</span>'</span>, user.email)
+</div></code></pre>
+<h3 id="email-utility">Email Utility</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># utils.py</span>
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">from</span> django.core.mail <span class="hljs-keyword">import</span> send_mail
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_async_email</span><span class="hljs-params">(subject, message, to_email)</span>:</span>
+    threading.Thread(target=send_mail, args=(subject, message, <span class="hljs-literal">None</span>, [to_email])).start()
+</div></code></pre>
+<h3 id="token-decryption">Token Decryption</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate</span><span class="hljs-params">(request, uidb64, token)</span>:</span>
+    uid = force_str(urlsafe_base64_decode(uidb64))
+    user = User.objects.get(pk=uid)
+    <span class="hljs-keyword">if</span> default_token_generator.check_token(user, token):
+        user.is_active = <span class="hljs-literal">True</span>
+        user.save()
+</div></code></pre>
+<h3 id="custom-permission">Custom Permission</h3>
+<p>decoretors.py</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.contrib.auth.decorators <span class="hljs-keyword">import</span> login_required
+<span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> wraps
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponseForbidden
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login_required_custom</span><span class="hljs-params">(required_role)</span>:</span>
+    <span class="hljs-string">"""Decorator to enforce login and role-based access control.
+    Usage: @login_required_custom('customer') or @login_required_custom('seller')
+    """</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decorator</span><span class="hljs-params">(view_func)</span>:</span>
+<span class="hljs-meta">        @login_required</span>
+<span class="hljs-meta">        @wraps(view_func)</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_wrapped_view</span><span class="hljs-params">(request, *args, **kwargs)</span>:</span>
+            user = request.user
+            <span class="hljs-keyword">if</span> required_role ==<span class="hljs-string">"customer"</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> user.is_customer:
+                <span class="hljs-keyword">return</span> HttpResponseForbidden(<span class="hljs-string">"You do not have permission to access this page."</span>)
+            <span class="hljs-keyword">if</span> required_role == <span class="hljs-string">"seller"</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> user.is_seller:
+                <span class="hljs-keyword">return</span> HttpResponseForbidden(<span class="hljs-string">"You do not have permission to access this page."</span>)
+            <span class="hljs-keyword">return</span> view_func(request, *args, **kwargs)
+        <span class="hljs-keyword">return</span> _wrapped_view
+</div></code></pre>
+<h3 id="add-permissions-to-user">add Permissions to user</h3>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image.png" alt="alt text"></p>
+<p>permissions.py</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> products.models <span class="hljs-keyword">import</span> Product
+
+PERMISSION_CONFIG = {
+    <span class="hljs-string">'customer'</span>: {
+        Product:[<span class="hljs-string">"view"</span>]
+    },
+    <span class="hljs-string">'seller'</span>: {
+        Product:[<span class="hljs-string">"view"</span>,<span class="hljs-string">"add"</span>,<span class="hljs-string">"change"</span>]
+    },
+}
+</div></code></pre>
+<p>utils.py</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.contrib.auth.models <span class="hljs-keyword">import</span> Permission
+<span class="hljs-keyword">from</span> django.contrib.contenttypes.models <span class="hljs-keyword">import</span> ContentType
+<span class="hljs-keyword">from</span> products.models <span class="hljs-keyword">import</span> Product
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assign_permissions</span><span class="hljs-params">(user, role)</span>:</span>
+    <span class="hljs-string">"""Assign permissions to user based on their role."""</span>
+    content_type = ContentType.objects.get_for_model(Product)
+    permissions = PERMISSION_CONFIG.get(role, {})
+    
+    <span class="hljs-keyword">for</span> model, perms <span class="hljs-keyword">in</span> permissions.items():
+        <span class="hljs-keyword">for</span> perm <span class="hljs-keyword">in</span> perms:
+            permission = Permission.objects.get(
+                codename=<span class="hljs-string">f"<span class="hljs-subst">{perm}</span>_<span class="hljs-subst">{model._meta.model_name}</span>"</span>,
+                content_type=content_type
+            )
+            user.user_permissions.add(permission)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render, redirect
+<span class="hljs-keyword">from</span> django.contrib.auth.decorators <span class="hljs-keyword">import</span> login_required
+<span class="hljs-keyword">from</span> .permissions <span class="hljs-keyword">import</span> assign_permissions
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> User
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">if</span> request.method == <span class="hljs-string">'POST'</span>:
+        form = RegistrationForm(request.POST)
+        <span class="hljs-keyword">if</span> form.is_valid():
+            user = form.save()
+            role = form.cleaned_data[<span class="hljs-string">'role'</span>]
+            assign_permissions(user, role)  <span class="hljs-comment"># Assign permissions based on role</span>
+            <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'login'</span>)
+    <span class="hljs-keyword">else</span>:
+        form = RegistrationForm()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'account/register.html'</span>, {<span class="hljs-string">'form'</span>: form})
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-meta">@login_required</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">product_list</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">if</span> request.user.has_perm(<span class="hljs-string">'products.view_product'</span>):
+        products = Product.objects.all()
+        <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'products/product_list.html'</span>, {<span class="hljs-string">'products'</span>: products})
+    <span class="hljs-keyword">return</span> HttpResponseForbidden(<span class="hljs-string">"You do not have permission to view products."</span>)
+</div></code></pre>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-1.png" alt="alt text"></p>
+<h3 id="cookie">COOKIE</h3>
+<p>A cookie is a small piece of data stored on the user's computer by a server. It’s used to remember information about the user across multiple requests or visits to the site.</p>
+<p>we send it like this-&gt; <img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-2.png" alt="alt text"></p>
+<p>set-&gt; <img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-3.png" alt="alt text">
+get-&gt; <img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-4.png" alt="alt text">
+delete-&gt; <img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-5.png" alt="alt text"></p>
+<p>More secure-&gt;
+signed cookies are more secure because they include a signature that verifies the integrity of the cookie data. This prevents tampering, as any changes to the cookie would invalidate the signature.</p>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-6.png" alt="alt text"></p>
+<h2 id="session-management">Session Management</h2>
+<p>Django uses sessions to store data on the server side, allowing you to keep track of user interactions across requests. Sessions are typically stored in the database, cache, or file system.</p>
+<blockquote>
+<p>important settings.py</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+INSTALLED_APPS = [
+    ...
+    <span class="hljs-string">'django.contrib.sessions'</span>,
+    ...
+]
+MIDDLEWARE = [
+    ...
+    <span class="hljs-string">'django.contrib.sessions.middleware.SessionMiddleware'</span>,
+    ...
+]
+</div></code></pre>
+<p>SET-&gt;<img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-7.png" alt="alt text">
+get-&gt;<img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-8.png" alt="alt text">
+delete-&gt;<img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-9.png" alt="alt text">
+flush-&gt;<img src="file:///home/kisuke/Desktop/project/plan/django practice/day6/image-10.png" alt="alt text"> (used for clearing all session data/logout)</p>
+<h2 id="session-security">Session Security</h2>
+<p>To enhance session security, you can configure settings like <code>SESSION_COOKIE_SECURE</code>, <code>SESSION_EXPIRE_AT_BROWSER_CLOSE</code>, and <code>SESSION_COOKIE_AGE</code> in your <code>settings.py</code> file. These settings help protect against session hijacking and ensure that sessions are only valid over secure connections.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+SESSION_COOKIE_SECURE = <span class="hljs-literal">True</span>  <span class="hljs-comment"># Use secure cookies (HTTPS only)</span>
+SESSION_EXPIRE_AT_BROWSER_CLOSE = <span class="hljs-literal">True</span>  <span class="hljs-comment"># Expire session when browser closes</span>
+SESSION_COOKIE_AGE = <span class="hljs-number">1209600</span>  <span class="hljs-comment"># Session duration in seconds (2 weeks)</span>
+</div></code></pre>
+<h2 id="session-in-files">Session in Files</h2>
+<p>Django can store session data in files by configuring the session engine in <code>settings.py</code>. This is useful for lightweight applications or when you want to avoid database overhead.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+SESSION_ENGINE = <span class="hljs-string">'django.contrib.sessions.backends.file'</span>
+SESSION_FILE_PATH = BASE_DIR /<span class="hljs-string">'sessions'</span>  <span class="hljs-comment"># Specify the directory for session files</span>
+</div></code></pre>
+<p>This will create session files in the specified directory, allowing you to manage session data without a database.</p>
+<h2 id="cache-management">Cache Management</h2>
+<p>Django provides a caching framework to store frequently accessed data in memory, reducing database queries and improving performance. You can use various backends like Memcached, Redis, or the local memory cache.
+It helps in speeding up the application by storing data that is expensive to compute or retrieve.</p>
+<h3 id="%E2%9C%85-djangos-caching-types">✅ Django’s Caching Types :-</h3>
+<ol>
+<li>
+<h4 id="per-site-caching-%E2%9C%85"><strong>Per-Site Caching</strong> ✅</h4>
+<ul>
+<li>Caches <strong>every page</strong> for every user across the whole site.</li>
+<li>Enabled via Django middleware (<code>UpdateCacheMiddleware</code> and <code>FetchFromCacheMiddleware</code>).</li>
+<li>Good for public sites where the content is mostly static.</li>
+<li><strong>Set in <code>settings.py</code>:</strong></li>
+</ul>
+<pre class="hljs"><code><div>MIDDLEWARE = [
+    <span class="hljs-string">'django.middleware.cache.UpdateCacheMiddleware'</span>,
+    ...
+    <span class="hljs-string">'django.middleware.cache.FetchFromCacheMiddleware'</span>,
+]
+
+ 
+
+CACHES = {
+    <span class="hljs-string">'default'</span>: {
+        <span class="hljs-string">'BACKEND'</span>: <span class="hljs-string">'django.core.cache.backends.db.DatabaseCache'</span>,
+        <span class="hljs-string">'LOCATION'</span>: <span class="hljs-string">'django_cache'</span>,
+        <span class="hljs-string">'TIMEOUT'</span>: <span class="hljs-number">60</span> * <span class="hljs-number">5</span>,  <span class="hljs-comment"># cache for 5 minutes</span>
+        <span class="hljs-string">'OPTIONS'</span>: {
+            <span class="hljs-string">'MAX_ENTRIES'</span>: <span class="hljs-number">1000</span>,  <span class="hljs-comment"># maximum number of entries in cache</span>
+        },
+    }
+}
+<span class="hljs-comment"># Local memory cache</span>
+CACHES = {
+    <span class="hljs-string">'default'</span>: {
+        <span class="hljs-string">'BACKEND'</span>: <span class="hljs-string">'django.core.cache.backends.locmem.LocMemCache'</span>,
+        <span class="hljs-string">'LOCATION'</span>: <span class="hljs-string">'unique-snowflake'</span>,
+        <span class="hljs-string">'TIMEOUT'</span>: <span class="hljs-number">60</span> * <span class="hljs-number">5</span>,  <span class="hljs-comment"># cache for 5 minutes</span>
+    }
+}
+
+CACHE_MIDDLEWARE_SECONDS = <span class="hljs-number">600</span>  <span class="hljs-comment"># cache for 10 minutes</span>
+</div></code></pre>
+<pre class="hljs"><code><div>python manage.py createcachetable  # create cache table in database
+</div></code></pre>
+</li>
+</ol>
+<h4 id="2-per-view-caching">2. <strong>Per-View Caching</strong></h4>
+<ul>
+<li>
+<p>Caches the <strong>entire output of a specific view</strong>.</p>
+</li>
+<li>
+<p>More flexible than per-site caching.</p>
+</li>
+<li>
+<p>No middleware needed.</p>
+</li>
+<li>
+<p>Uses the <code>@cache_page</code> decorator.</p>
+</li>
+<li>
+<p>There are two ways to use it:</p>
+<p><strong>a. In the view function:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.views.decorators.cache <span class="hljs-keyword">import</span> cache_page
+
+<span class="hljs-meta">@cache_page(60 * 5)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_view</span><span class="hljs-params">(request)</span>:</span>
+    ...
+
+
+</div></code></pre>
+</li>
+</ul>
+<p><strong>b. In the URL configuration:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> my_view
+<span class="hljs-keyword">from</span> django.views.decorators.cache <span class="hljs-keyword">import</span> cache_page
+
+urlpatterns = [
+    path(<span class="hljs-string">'my-view/'</span>, cache_page(<span class="hljs-number">60</span> * <span class="hljs-number">5</span>)(my_view), name=<span class="hljs-string">'my_view'</span>),
+]
+</div></code></pre>
+<ol start="3">
+<li>
+<h4 id="template-fragment-caching"><strong>Template Fragment Caching</strong></h4>
+<ul>
+<li>
+<p>Caches <strong>sections of templates</strong>.</p>
+</li>
+<li>
+<p>Useful when only parts of a page are slow.</p>
+</li>
+<li>
+<p>Syntax:</p>
+<pre class="hljs"><code><div><span class="hljs-template-tag">{% <span class="hljs-name"><span class="hljs-name">load</span></span> cache %}</span><span class="xml">
+</span><span class="hljs-template-tag">{% <span class="hljs-name">cache</span> 300 some_key %}</span><span class="xml">
+    ... expensive HTML block ...
+</span><span class="hljs-template-tag">{% <span class="hljs-name">endcache</span> %}</span><span class="xml">
+</span></div></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="low-level-caching"><strong>Low-Level Caching</strong></h4>
+<ul>
+<li>
+<p>Caches <strong>arbitrary Python data</strong> (querysets, computations, etc.)</p>
+</li>
+<li>
+<p>Uses the <code>django.core.cache</code> API:</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.core.cache <span class="hljs-keyword">import</span> cache
+
+result = cache.get(<span class="hljs-string">"expensive_query"</span>)
+<span class="hljs-keyword">if</span> result <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+    result = do_expensive_thing()
+    cache.set(<span class="hljs-string">"expensive_query"</span>, result, timeout=<span class="hljs-number">300</span>)
+cache.add(<span class="hljs-string">"new_key"</span>, <span class="hljs-string">"value"</span>, timeout=<span class="hljs-number">300</span>)  <span class="hljs-comment"># Adds only if key doesn't exist</span>
+cache.delete(<span class="hljs-string">"old_key"</span>)  <span class="hljs-comment"># Deletes a key from cache</span>
+cache.clear()  <span class="hljs-comment"># Clears the entire cache</span>
+cache.set_many({<span class="hljs-string">"key1"</span>: <span class="hljs-string">"value1"</span>, <span class="hljs-string">"key2"</span>: <span class="hljs-string">"value2"</span>}, timeout=<span class="hljs-number">300</span>)  <span class="hljs-comment"># Set multiple keys at once</span>
+cache.get_many([<span class="hljs-string">"key1"</span>, <span class="hljs-string">"key2"</span>])  <span class="hljs-comment"># Get multiple keys at once</span>
+cache.touch(<span class="hljs-string">"key"</span>, timeout=<span class="hljs-number">600</span>)  <span class="hljs-comment"># Update timeout of an existing key</span>
+cache.incr(<span class="hljs-string">"counter"</span>)  <span class="hljs-comment"># Increment a numeric value in cache</span>
+cache.decr(<span class="hljs-string">"counter"</span>)  <span class="hljs-comment"># Decrement a numeric value in cache</span>
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="%E2%9C%85-final-summary">✅ Final Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Scope</th>
+<th>Example Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Per-Site Caching</strong></td>
+<td>Entire site (all pages)</td>
+<td>Blog or CMS with same content for all</td>
+</tr>
+<tr>
+<td><strong>Per-View Caching</strong></td>
+<td>One view function/class</td>
+<td>Product listing or home page</td>
+</tr>
+<tr>
+<td><strong>Template Fragment</strong></td>
+<td>Part of a template</td>
+<td>Sidebar, footer, or tag cloud</td>
+</tr>
+<tr>
+<td><strong>Low-Level Caching</strong></td>
+<td>Arbitrary data</td>
+<td>Querysets, computations, external APIs</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>It has 3 places to store cache:</p>
+<ol>
+<li><strong>Database</strong>: Stores cache data in the database tables.
+<ul>
+<li>Use <code>django.core.cache.backends.db.DatabaseCache</code>.</li>
+<li>Requires <code>django.contrib.sessions</code> app.</li>
+<li>Create cache table with <code>python manage.py createcachetable</code>.</li>
+</ul>
+</li>
+<li><strong>File System</strong>: Stores cache data in files on the server.
+<ul>
+<li>Use <code>django.core.cache.backends.filebased.FileBasedCache</code>.</li>
+<li>Specify directory in <code>settings.py</code> with <code>FILE_CACHE_DIR</code>.</li>
+</ul>
+</li>
+<li><strong>Memory</strong>: Stores cache data in memory (RAM).
+<ul>
+<li>Use <code>django.core.cache.backends.locmem.LocMemCache</code>.</li>
+<li>Fastest but data is lost on server restart.</li>
+</ul>
+</li>
+</ol>
+<h1 id="day7">day7</h1>
+<h1 id="signals">Signals</h1>
+<p>In Django, signals are a way to allow certain senders to notify a set of receivers when some action has taken place.</p>
+<p>It has many types of signals. They are -&gt;</p>
+<h2 id="model-signals">Model Signals</h2>
+<ul>
+<li><code>pre_save</code>: Sent just before a model's <code>save()</code> method is called.</li>
+<li><code>post_save</code>: Sent just after a model's <code>save()</code> method is called.</li>
+<li><code>pre_delete</code>: Sent just before a model's <code>delete()</code> method is called.</li>
+<li><code>post_delete</code>: Sent just after a model's <code>delete()</code> method is called.</li>
+<li><code>pre_init</code>: Sent just before a model's <code>__init__()</code> method is called.</li>
+<li><code>post_init</code>: Sent just after a model's <code>__init__()</code> method is called.</li>
+<li><code>class_prepared</code>: Sent when a model class is prepared.</li>
+</ul>
+<h2 id="db-signals">DB Signals</h2>
+<ul>
+<li><code>connection_created</code>: Sent when a new database connection is created.</li>
+<li><code>connection_closed</code>: Sent when a database connection is closed.</li>
+</ul>
+<h2 id="requestresponse-signals">Request/Response Signals</h2>
+<ul>
+<li><code>request_started</code>: Sent when a request is started.</li>
+<li><code>request_finished</code>: Sent when a request is finished.</li>
+<li><code>got_request_exception</code>: Sent when an exception is raised during request processing.</li>
+</ul>
+<h2 id="user-signals">User Signals</h2>
+<ul>
+<li><code>user_logged_in</code>: Sent when a user logs in.</li>
+<li><code>user_logged_out</code>: Sent when a user logs out.</li>
+<li><code>user_password_changed</code>: Sent when a user changes their password.</li>
+<li><code>user_login_failed</code>: Sent when a user login attempt fails.</li>
+</ul>
+<h2 id="migration-signals">Migration Signals</h2>
+<ul>
+<li><code>pre_migrate</code>: Sent before a migration is applied.</li>
+<li><code>post_migrate</code>: Sent after a migration is applied.</li>
+</ul>
+<h2 id="settings-signals">Settings Signals</h2>
+<ul>
+<li><code>setting_changed</code>: Sent when a setting is changed.</li>
+<li><code>template_rendered</code>: Sent when a template is rendered.</li>
+</ul>
+<h2 id="many-to-many-signals">Many-to-Many Signals</h2>
+<ul>
+<li><code>m2m_changed</code>: Sent when a many-to-many relationship is changed.</li>
+</ul>
+<h2 id="custom-signals">Custom Signals</h2>
+<ul>
+<li>You can create custom signals using Django's <code>Signal</code> class.</li>
+</ul>
+<h2 id="user-signals-example">User Signals Example</h2>
+<p>Let's see how to use user signals</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-keyword">from</span> django.contrib.auth.models <span class="hljs-keyword">import</span> User
+<span class="hljs-keyword">from</span> django.contrib.auth.signals <span class="hljs-keyword">import</span> user_logged_in, user_logged_out, user_login_failed
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login_success</span><span class="hljs-params">(sender,request, user, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"User <span class="hljs-subst">{user.username}</span> logged in successfully."</span>)
+
+
+user_logged_in.connect(login_success,sender=User)
+
+</div></code></pre>
+<p>we can also use decorators to connect signals:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-meta">... </span><span class="hljs-comment">#same headers as above</span>
+<span class="hljs-keyword">from</span> django.dispatch <span class="hljs-keyword">import</span> receiver
+
+<span class="hljs-meta">@receiver(user_logged_in, sender=User)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login_success</span><span class="hljs-params">(sender, request, user, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"User <span class="hljs-subst">{user.username}</span> logged in successfully."</span>)
+</div></code></pre>
+<blockquote>
+<p>same work flow with user_logged_out, user_login_failed, etc.</p>
+</blockquote>
+<h2 id="model-signals-example">Model Signals Example</h2>
+<p>Let's see how to use model signals</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-keyword">from</span> django.db.models.signals <span class="hljs-keyword">import</span> pre_save, post_save,pre_delete, post_delete,pre_init, post_init, class_prepared,pre_migrate, post_migrate
+<span class="hljs-keyword">from</span> django.dispatch <span class="hljs-keyword">import</span> receiver
+
+<span class="hljs-meta">@receiver(pre_save, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_pre_save</span><span class="hljs-params">(sender, instance, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"About to save <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(post_save, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_post_save</span><span class="hljs-params">(sender, instance, created, **kwargs)</span>:</span>
+    <span class="hljs-keyword">if</span> created:
+        print(<span class="hljs-string">f"Created new <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">f"Updated <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(pre_delete, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_pre_delete</span><span class="hljs-params">(sender, instance, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"About to delete <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(post_delete, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_post_delete</span><span class="hljs-params">(sender, instance, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"Deleted <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(pre_init, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_pre_init</span><span class="hljs-params">(sender, *args, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"About to initialize <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(post_init, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_post_init</span><span class="hljs-params">(sender, instance, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"Initialized <span class="hljs-subst">{instance}</span> of type <span class="hljs-subst">{sender.__name__}</span>"</span>)
+
+<span class="hljs-meta">@receiver(class_prepared, sender=MyModel)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_class_prepared</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"Class <span class="hljs-subst">{sender.__name__}</span> is prepared"</span>)
+
+<span class="hljs-meta">@receiver(pre_migrate)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_pre_migrate</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    print(<span class="hljs-string">"About to apply migrations"</span>)
+
+<span class="hljs-meta">@receiver(post_migrate)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_model_post_migrate</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    print(<span class="hljs-string">"Migrations applied successfully"</span>)
+</div></code></pre>
+<h2 id="request-signals-example">Request Signals Example</h2>
+<p>Let's see how to use request signals</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-keyword">from</span> django.core.signals <span class="hljs-keyword">import</span> request_started, request_finished, got_request_exception
+<span class="hljs-keyword">from</span> django.dispatch <span class="hljs-keyword">import</span> receiver
+
+<span class="hljs-meta">@receiver(request_started)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">request_started_handler</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    print(<span class="hljs-string">"Request has started"</span>)
+
+<span class="hljs-meta">@receiver(request_finished)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">request_finished_handler</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    print(<span class="hljs-string">"Request has finished"</span>)
+
+<span class="hljs-meta">@receiver(got_request_exception)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">got_request_exception_handler</span><span class="hljs-params">(sender, request, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"An exception occurred during request processing: <span class="hljs-subst">{kwargs.get(<span class="hljs-string">'exception'</span>)}</span>"</span>)
+</div></code></pre>
+<h2 id="db-signals-example">DB Signals Example</h2>
+<p>Let's see how to use DB signals</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-keyword">from</span> django.db.backends.signals <span class="hljs-keyword">import</span> connection_created
+
+<span class="hljs-keyword">from</span> django.dispatch <span class="hljs-keyword">import</span> receiver
+<span class="hljs-meta">@receiver(connection_created)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connection_created_handler</span><span class="hljs-params">(sender, connection, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"New database connection created: <span class="hljs-subst">{connection.alias}</span>"</span>)
+</div></code></pre>
+<h2 id="custom-signals-example">Custom Signals Example</h2>
+<p>You can create custom signals using Django's <code>Signal</code> class.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># signals.py</span>
+<span class="hljs-keyword">from</span> django.dispatch <span class="hljs-keyword">import</span> Signal, receiver
+
+<span class="hljs-comment"># Define a custom signal</span>
+
+notification_sent = Signal()
+
+<span class="hljs-meta">@receiver(notification_sent)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">send_notification</span><span class="hljs-params">(sender, **kwargs)</span>:</span>
+    <span class="hljs-comment"># Logic to send notification</span>
+    print(<span class="hljs-string">"Notification sent!"</span>)
+    print(<span class="hljs-string">f"Sender: <span class="hljs-subst">{sender}</span>, kwargs: <span class="hljs-subst">{kwargs}</span>"</span>)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> myapp.signals <span class="hljs-keyword">import</span> notification_sent
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">some_view</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># Some logic</span>
+    notification_sent.send(sender=request.user, message=<span class="hljs-string">"Hello, World!"</span>)
+</div></code></pre>
+<h2 id="how-to-register-signals">How to Register Signals</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># apps.py</span>
+<span class="hljs-keyword">from</span> django.apps <span class="hljs-keyword">import</span> AppConfig
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyAppConfig</span><span class="hljs-params">(AppConfig)</span>:</span>
+    name = <span class="hljs-string">'myapp'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ready</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">import</span> myapp.signals  <span class="hljs-comment"># Import the signals module to ensure signals are registered</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># __init__.py</span>
+default_app_config = <span class="hljs-string">'myapp.apps.MyAppConfig'</span>
+</div></code></pre>
+<p>if u do not want to use <strong>init</strong>.py, you can add the app config directly in the settings.py file:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+INSTALLED_APPS = [
+    ...
+    <span class="hljs-string">'myapp.apps.MyAppConfig'</span>,  <span class="hljs-comment"># in place of 'myapp'</span>
+    ...
+]
+</div></code></pre>
+<h2 id="caution">Caution</h2>
+<ul>
+<li>
+<p>Signals are great for decoupling logic (e.g., don't clutter your views),</p>
+</li>
+<li>
+<p>But overusing signals can make your codebase hard to debug and hard to follow, since logic is triggered “in the background.”</p>
+</li>
+</ul>
+<h3 id="uses-of-signals">uses of signals</h3>
+<p>Signals are triggered when specific actions/events happen, especially in the models/auth layer. They're perfect for adding side effects without cluttering your main code.</p>
+<ol>
+<li>
+<p>Send Emails or Notifications
+Send a welcome email when a user registers (post_save on User).</p>
+<p>Alert admin when an important model is updated.</p>
+</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-meta">@receiver(post_save, sender=User)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">welcome_email</span><span class="hljs-params">(sender, instance, created, **kwargs)</span>:</span>
+    <span class="hljs-keyword">if</span> created:
+        send_mail(<span class="hljs-string">"Welcome!"</span>, <span class="hljs-string">"Thanks for joining."</span>, to=[instance.email])
+</div></code></pre>
+<p>👥 2. Auto-create Related Models
+Automatically create a Profile when a new User is created.</p>
+<pre class="hljs"><code><div><span class="hljs-meta">@receiver(post_save, sender=User)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user_profile</span><span class="hljs-params">(sender, instance, created, **kwargs)</span>:</span>
+    <span class="hljs-keyword">if</span> created:
+        Profile.objects.create(user=instance)
+</div></code></pre>
+<ol start="3">
+<li>
+<p>Clean Up Data
+When an object is deleted (post_delete), remove associated files or records.</p>
+</li>
+<li>
+<p>Auth Tracking
+Log user login/logout events.</p>
+<p>Trigger actions when login fails.</p>
+</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-meta">@receiver(user_logged_in)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">track_login</span><span class="hljs-params">(sender, user, request, **kwargs)</span>:</span>
+    print(<span class="hljs-string">f"<span class="hljs-subst">{user.username}</span> just logged in"</span>)
+</div></code></pre>
+<ol start="5">
+<li>
+<p>Testing &amp; Development
+Mock or track actions during automated tests.</p>
+<p>Reset data when migrations are run (post_migrate).</p>
+</li>
+</ol>
+<h1 id="middlewares">Middlewares</h1>
+<p>Middlewares are a way to process requests globally before they reach the view or after the view has processed them. They can be used for various purposes such as logging, authentication, and more.</p>
+<blockquote>
+<p>Middleware works for all requests, not just specific ones. It is applied to every request that comes into the Django application.(Womp womp😭)</p>
+</blockquote>
+<pre class="hljs"><code><div>| Feature          | <span class="hljs-strong">**Middleware**</span>                                   |
+| ---------------- | ------------------------------------------------ |
+| <span class="hljs-strong">**Layer**</span>        | HTTP Request/Response cycle                      |
+| <span class="hljs-strong">**Trigger**</span>      | Every request/response                           |
+| <span class="hljs-strong">**Scope**</span>        | Global (affects all views/requests)              |
+| <span class="hljs-strong">**Manual Call?**</span> | Never called manually (auto-applied by Django)   |
+| <span class="hljs-strong">**Best For**</span>     | Security, logging, request/response modification |
+
+| Feature          | <span class="hljs-strong">**Signals**</span>                                              |
+| ---------------- |
+| <span class="hljs-strong">**Layer**</span>        | Model or App event layer (database, login, etc.)         |
+| <span class="hljs-strong">**Trigger**</span>      | Specific events like <span class="hljs-code">`post_save`</span>, <span class="hljs-code">`user_logged_in`</span>, etc. |
+| <span class="hljs-strong">**Scope**</span>        | Local to models or specific actions                      |
+| <span class="hljs-strong">**Manual Call?**</span> | Also automatic, but must be explicitly connected         |
+| <span class="hljs-strong">**Best For**</span>     | Side effects: emails, logging, cleanup, notifications    |
+
+
+| Role                  | Middleware                        | Signals                                                    |
+| --------------------- | --------------------------------- | ---------------------------------------------------------- |
+| Like a <span class="hljs-strong">**toll booth**</span> | Checks/modifies <span class="hljs-strong">**every request**</span> | Like a <span class="hljs-strong">**doorbell**</span> — only rings when an <span class="hljs-strong">**event happens**</span> |
+</div></code></pre>
+<h2 id="functional-middleware-example">functional middleware example</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># middlewares.py</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_fun_middleware</span><span class="hljs-params">(get_response)</span>:</span>
+    print(<span class="hljs-string">"One-time configuration or initialization."</span>)
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">middleware</span><span class="hljs-params">(request)</span>:</span>
+        <span class="hljs-comment"># Code to be executed for each request before the view (and later middleware) are called.</span>
+        print(<span class="hljs-string">"Before the view"</span>)
+
+        response = get_response(request)
+
+        <span class="hljs-comment"># Code to be executed for each request/response after the view is called.</span>
+        print(<span class="hljs-string">"After the view"</span>)
+        
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">return</span> middleware
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+MIDDLEWARE = [
+    ...
+    <span class="hljs-string">'myapp.middlewares.my_fun_middleware'</span>,  <span class="hljs-comment"># Add your middleware here</span>
+    ...
+]
+</div></code></pre>
+<p>We can also use it for rendering templates, for example:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># middlewares.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">template_rendering_middleware</span><span class="hljs-params">(get_response)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">middleware</span><span class="hljs-params">(request)</span>:</span>
+        response = get_response(request)
+        
+        <span class="hljs-keyword">if</span> response.status_code == <span class="hljs-number">200</span> <span class="hljs-keyword">and</span> <span class="hljs-string">'text/html'</span> <span class="hljs-keyword">in</span> response[<span class="hljs-string">'Content-Type'</span>]:
+            <span class="hljs-comment"># Render a template for the response</span>
+            <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'my_template.html'</span>, context={<span class="hljs-string">'data'</span>: <span class="hljs-string">'Hello, World!'</span>})
+        
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">return</span> middleware
+</div></code></pre>
+<p>in this case, the logic in views.py will not be executed, and the template will be rendered directly from the middleware.</p>
+<h2 id="class-based-middleware-example">Class-based middleware example</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># middlewares.py</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyMiddleware</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, get_response)</span>:</span>
+        self.get_response = get_response
+        print(<span class="hljs-string">"One-time configuration or initialization."</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, request)</span>:</span>
+        <span class="hljs-comment"># Code to be executed for each request before the view (and later middleware) are called.</span>
+        print(<span class="hljs-string">"Before the view"</span>)
+
+        response = self.get_response(request)
+
+        <span class="hljs-comment"># Code to be executed for each request/response after the view is called.</span>
+        print(<span class="hljs-string">"After the view"</span>)
+        
+        <span class="hljs-keyword">return</span> response
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_view</span><span class="hljs-params">(self, request, view_func, view_args, view_kwargs)</span>:</span>
+        <span class="hljs-comment"># Code to be executed before the view is called.</span>
+        print(<span class="hljs-string">"Processing view"</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Return None to continue processing the view</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_exception</span><span class="hljs-params">(self, request, exception)</span>:</span>
+        <span class="hljs-comment"># Code to handle exceptions raised by the view.</span>
+        print(<span class="hljs-string">f"Exception occurred: <span class="hljs-subst">{exception}</span>"</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Return None to continue processing the exception</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_template_response</span><span class="hljs-params">(self, request, response)</span>:</span>
+        <span class="hljs-comment"># Code to modify the response before rendering the template.</span>
+        print(<span class="hljs-string">"Processing template response"</span>)
+        response.context_data[<span class="hljs-string">'additional_data'</span>] = <span class="hljs-string">'Some additional data'</span>
+        <span class="hljs-keyword">return</span> response  <span class="hljs-comment"># Return the modified response</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+MIDDLEWARE = [
+    ...
+    <span class="hljs-string">'myapp.middlewares.MyMiddleware'</span>,  <span class="hljs-comment"># Add your middleware here</span>
+    ...
+]
+</div></code></pre>
+<h3 id="uses-of-middleware">Uses of Middleware</h3>
+<p>Middleware sits between the request and the view, and between the view and the response. It’s ideal for things that apply to every request or every response.</p>
+<ol>
+<li>Security
+Block users from specific IPs or user agents.</li>
+</ol>
+<p>Enforce HTTPS (redirect HTTP to HTTPS).</p>
+<p>Add security headers (like X-Frame-Options, Content-Security-Policy).</p>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlockIPMiddleware</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, request)</span>:</span>
+        <span class="hljs-keyword">if</span> request.META[<span class="hljs-string">'REMOTE_ADDR'</span>] <span class="hljs-keyword">in</span> [<span class="hljs-string">'192.168.1.1'</span>]:
+            <span class="hljs-keyword">return</span> HttpResponseForbidden(<span class="hljs-string">"Blocked"</span>)
+</div></code></pre>
+<ol start="2">
+<li>
+<p>Logging &amp; Debugging
+Log every incoming request and outgoing response.</p>
+<p>Track performance or API usage stats.</p>
+</li>
+<li>
+<p>Request/Response Modification
+Automatically add headers or cookies.</p>
+<p>Attach metadata or custom attributes to the request before it hits your view.</p>
+</li>
+<li>
+<p>Session &amp; Authentication
+Custom middleware for session-based access control.</p>
+<p>Inject user data globally into all views.</p>
+</li>
+</ol>
+<blockquote>
+<p>The order of middleware matters! Django processes them in the order they are listed in <code>MIDDLEWARE</code> setting. If one middleware modifies the request, the next one will see that modification.</p>
+</blockquote>
+<p>The oder is like this:</p>
+<pre class="hljs"><code><div>Middleware1(init) -&gt; Middleware2(init) -&gt; Middleware1(call) -&gt; Middleware2(call) -&gt; View -&gt; Middleware2(response) -&gt; Middleware1(response)
+</div></code></pre>
+<p>Although you can still make it accessable to speciied users only, by checking the request.user in the middleware:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># middlewares.py</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponseForbidden
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserSpecificMiddleware</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, request)</span>:</span>
+        <span class="hljs-keyword">if</span> request.user.is_staff:
+            <span class="hljs-keyword">return</span> self.get_response(request)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'not_allowed.html'</span>)
+</div></code></pre>
+<p>We can also use some restricted key by which anyone can access the site like this:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># middlewares.py</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponseForbidden
+<span class="hljs-keyword">from</span> django.conf <span class="hljs-keyword">import</span> settings
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RestrictedAccessMiddleware</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, request)</span>:</span>
+        unk = <span class="hljs-string">"key"</span> <span class="hljs-comment"># replace with your key</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-string">'u'</span> <span class="hljs-keyword">in</span> request.GET <span class="hljs-keyword">and</span> request.GET[<span class="hljs-string">'u'</span>] == unk:
+            <span class="hljs-keyword">return</span> self.get_response(request)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'not_allowed.html'</span>)
+</div></code></pre>
+<p>The user can access the site by using the key like this:
+<code>http://example.com/?u=key</code></p>
+<h1 id="queryset">QuerySet</h1>
+<p>get all:- Modelname.objects.all()
+all data but filtered :- ModelName.objects.filter(field=value)
+get one object:- ModelName.objects.get(field=value)
+get one object or return None:- ModelName.objects.filter(field=value).first()
+exclude :- ModelName.objects.exclude(field=value)
+count :- ModelName.objects.count()
+order by :- ModelName.objects.order_by('field') # ascending
+order by descending :- ModelName.objects.order_by('-field')
+random :- ModelName.objects.order_by('?')
+distinct :- ModelName.objects.distinct()
+upto some number of objects :- ModelName.objects.order_by('field')[:10]
+to get only some fields :- ModelName.objects.values('field1', 'field2')</p>
+<p>to see the SQL query generated by a queryset, you can use the <code>query</code> attribute:</p>
+<pre class="hljs"><code><div>queryset = ModelName.objects.filter(field=value)
+print(queryset.query)
+</div></code></pre>
+<p>union of two querysets:</p>
+<pre class="hljs"><code><div>queryset1 = ModelName.objects.filter(field1=value1)
+queryset2 = ModelName.objects.filter(field2=value2)
+combined_queryset = queryset1.union(queryset2)
+<span class="hljs-comment"># to allow duplicates</span>
+combined_queryset = queryset1.union(queryset2, all=<span class="hljs-literal">True</span>)
+</div></code></pre>
+<p>intersection of two querysets:</p>
+<pre class="hljs"><code><div>queryset1 = ModelName.objects.filter(field1=value1) 
+queryset2 = ModelName.objects.filter(field2=value2)
+intersection_queryset = queryset1.intersection(queryset2)
+</div></code></pre>
+<p>difference of two querysets:</p>
+<pre class="hljs"><code><div>queryset1 = ModelName.objects.filter(field1=value1)
+queryset2 = ModelName.objects.filter(field2=value2)
+difference_queryset = queryset1.difference(queryset2)
+</div></code></pre>
+<p><code>And</code> and <code>Or</code> operations:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># AND operation</span>
+queryset = ModelName.objects.filter(field1=value1) &amp; ModelName.objects.filter(field2=value2)
+queryset = ModelName.objects.filter(field1=value1,field2=value2)
+
+<span class="hljs-comment"># OR operation</span>
+queryset = ModelName.objects.filter(field1=value1) | ModelName.objects.filter(field2=value2)
+</div></code></pre>
+<blockquote>
+<p>get might get multiple objects if the filter is not unique, causing an error, so use it with caution.</p>
+</blockquote>
+<p>first and last:</p>
+<pre class="hljs"><code><div>first_object = ModelName.objects.first()  <span class="hljs-comment"># Get the first object</span>
+last_object = ModelName.objects.last()    <span class="hljs-comment"># Get the last object</span>
+</div></code></pre>
+<p>we can also do it with other querysets:</p>
+<pre class="hljs"><code><div>first_object = ModelName.objects.filter(field=value).first()  <span class="hljs-comment"># Get the first object matching the filter</span>
+object_2 = ModelName.objects.order_by(<span class="hljs-string">'field'</span>).last()  <span class="hljs-comment"># Get the last object ordered by 'field'</span>
+</div></code></pre>
+<p><strong>latest</strong></p>
+<pre class="hljs"><code><div>latest_object = ModelName.objects.latest(<span class="hljs-string">'pass_date'</span>)
+</div></code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>latest()</code> requires a field to order by, typically a date or timestamp field. in this case, it is <code>pass_date</code>. the model must have a field somthing like this<code>pass_date = models.DateTimeField(auto_now_add=True)</code></p>
+</blockquote>
+<p><strong>earliest</strong></p>
+<pre class="hljs"><code><div>earliest_object = ModelName.objects.earliest(<span class="hljs-string">'pass_date'</span>)
+</div></code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>earliest()</code> also requires a field to order by, similar to <code>latest()</code>. it is <code>pass_date</code> in this case.</p>
+</blockquote>
+<p><strong>Create Data</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Create a new object</span>
+new_object = ModelName.objects.create(field1=value1, field2=value2)
+</div></code></pre>
+<blockquote>
+<p>This will create a new object in the database and return the created object.</p>
+</blockquote>
+<p><strong>get_or_create</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Get an object if it exists, otherwise create it</span>
+obj, created = ModelName.objects.get_or_create(field1=value1, defaults={<span class="hljs-string">'field2'</span>: value2})
+</div></code></pre>
+<blockquote>
+<p><code>get_or_create</code> returns a tuple of the object and a boolean indicating whether it was created or not. The <code>defaults</code> argument allows you to specify additional fields to set if the object is created.</p>
+</blockquote>
+<p><strong>update</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Update existing objects</span>
+ModelName.objects.filter(field1=value1).update(field2=value2)
+</div></code></pre>
+<blockquote>
+<p>This will update all objects matching the filter with the new value for <code>field2</code>.</p>
+</blockquote>
+<p><strong>bulk_create</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Bulk create multiple objects</span>
+objects_to_create = [
+    ModelName(field1=value1, field2=value2),
+    ModelName(field1=value3, field2=value4),
+]
+ModelName.objects.bulk_create(objects_to_create)
+</div></code></pre>
+<blockquote>
+<p><code>bulk_create</code> allows you to create multiple objects in a single query, which is more efficient than creating them one by one.</p>
+</blockquote>
+<h2 id="field-lookups">Field lookups</h2>
+<p>Django provides a powerful way to filter querysets using field lookups. These lookups allow you to perform various types of queries on your models. Here are some common field lookups:</p>
+<ul>
+<li>exact: Matches the exact value.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__exact=value)
+</div></code></pre>
+<ul>
+<li>iexact: Case-insensitive exact match.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__iexact=value)
+</div></code></pre>
+<ul>
+<li>contains: Checks if the field contains the specified value.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__contains=value)
+</div></code></pre>
+<ul>
+<li>icontains: Case-insensitive contains check.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__icontains=value)
+</div></code></pre>
+<ul>
+<li>in: Checks if the field's value is in a list of values.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__in=[value1, value2, value3])
+</div></code></pre>
+<ul>
+<li>gt: Greater than.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__gt=value)
+</div></code></pre>
+<ul>
+<li>gte: Greater than or equal to.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__gte=value)
+</div></code></pre>
+<ul>
+<li>lt: Less than.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__lt=value)
+</div></code></pre>
+<ul>
+<li>lte: Less than or equal to.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__lte=value)
+</div></code></pre>
+<ul>
+<li>startswith: Checks if the field starts with the specified value.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__startswith=value)
+</div></code></pre>
+<ul>
+<li>istartswith: Case-insensitive startswith check.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__istartswith=value)
+</div></code></pre>
+<ul>
+<li>endswith: Checks if the field ends with the specified value.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__endswith=value)
+</div></code></pre>
+<ul>
+<li>iendswith: Case-insensitive endswith check.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__iendswith=value)
+</div></code></pre>
+<ul>
+<li>range: Checks if the field's value is within a specified range.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__range=(start_value, end_value))
+</div></code></pre>
+<ul>
+<li>isnull: Checks if the field is null.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__isnull=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># or False</span>
+</div></code></pre>
+<ul>
+<li>date: Filters by date.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__date=date_value)
+</div></code></pre>
+<ul>
+<li>year: Filters by year.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__year=year_value)
+ModelName.objects.filter(field__year__gt=year_value)  <span class="hljs-comment"># greater than</span>
+</div></code></pre>
+<ul>
+<li>month: Filters by month.</li>
+</ul>
+<pre class="hljs"><code><div>ModelName.objects.filter(field__month=month_value)
+</div></code></pre>
+<h1 id="aggregate-functions">Aggregate Functions</h1>
+<ul>
+<li>Avg: Calculates the average of a field.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Avg
+
+data = ModelName.objects.all()
+average = data.aggregate(Avg(<span class="hljs-string">'field'</span>))
+</div></code></pre>
+<ul>
+<li>Count: Counts the number of objects.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Count
+data = ModelName.objects.all()
+count = data.aggregate(Count(<span class="hljs-string">'field'</span>))
+</div></code></pre>
+<ul>
+<li>Max: Finds the maximum value of a field.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Max
+data = ModelName.objects.all()
+max_value = data.aggregate(Max(<span class="hljs-string">'field'</span>))
+</div></code></pre>
+<ul>
+<li>Min: Finds the minimum value of a field.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Min
+data = ModelName.objects.all()
+min_value = data.aggregate(Min(<span class="hljs-string">'field'</span>))
+</div></code></pre>
+<ul>
+<li>Sum: Calculates the sum of a field.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Sum
+data = ModelName.objects.all()
+total = data.aggregate(Sum(<span class="hljs-string">'field'</span>))
+</div></code></pre>
+<h1 id="q-objects">Q Objects</h1>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Q
+
+students = Student.objects.filter(
+    Q(name__icontains=<span class="hljs-string">'john'</span>) | Q(age__gte=<span class="hljs-number">18</span>)
+)
+</div></code></pre>
+<blockquote>
+<p>This will return all students whose name contains 'john' or whose age is greater than or equal to 18.
+You can also use <code>&amp;</code> for AND operations and <code>~</code> for NOT operations:</p>
+</blockquote>
+<pre class="hljs"><code><div>students = Student.objects.filter(
+    Q(name__icontains=<span class="hljs-string">'john'</span>) &amp; ~Q(age__lt=<span class="hljs-number">18</span>)
+)
+</div></code></pre>
+<blockquote>
+<p>This will return all students whose name contains 'john' and whose age is not less than 18.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Q
+students = Student.objects.filter(
+    ~Q(id__in=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]) &amp; Q(name__icontains=<span class="hljs-string">'john'</span>)
+)
+</div></code></pre>
+<blockquote>
+<p>This will return all students whose name contains 'john' and whose id is not in the list [1, 2, 3].</p>
+</blockquote>
+<h1 id="day8">day8</h1>
+<h1 id="model-inheritance">Model Inheritance</h1>
+<p>This example demonstrates how to use model inheritance in Django. Model inheritance allows you to create a base model that can be extended by other models, enabling code reuse and a cleaner design.</p>
+<p><img src="file:///home/kisuke/Desktop/project/plan/django practice/day8/image.png" alt="alt text"></p>
+<h2 id="abstract-base-classes">Abstract Base Classes</h2>
+<p>Abstract base classes are used when you want to define common fields and methods that can be inherited by other models, but you do not want to create a database table for the base class itself. Instead, only the child classes will have their own database tables.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Model Inheritance Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseModel</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    age = models.IntegerField()
+    joined_date = models.DateField()
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Meta</span>:</span>
+        abstract = <span class="hljs-literal">True</span>
+    
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(BaseModel)</span>:</span>
+    fees = models.DecimalField(max_digits=<span class="hljs-number">10</span>, decimal_places=<span class="hljs-number">2</span>)
+    joined_date = <span class="hljs-literal">None</span>  <span class="hljs-comment"># Overriding the joined_date field to None</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Teacher</span><span class="hljs-params">(BaseModel)</span>:</span>
+    salary = models.DecimalField(max_digits=<span class="hljs-number">10</span>, decimal_places=<span class="hljs-number">2</span>)
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Contractor</span><span class="hljs-params">(models.Model)</span>:</span>
+    payment = models.DecimalField(max_digits=<span class="hljs-number">10</span>, decimal_places=<span class="hljs-number">2</span>)
+</div></code></pre>
+<h2 id="multi-table-inheritance">Multi-table Inheritance</h2>
+<p>Multi-table inheritance is used when you want to create a base model that has its own database table, and each child model will also have its own table that includes a foreign key to the base model. This allows you to query the base model and get all related child models.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Model Inheritance Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ExamCenter</span><span class="hljs-params">(models.Model)</span>:</span>
+    center_name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    center_city = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(ExamCenter)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    roll_number = models.CharField(max_length=<span class="hljs-number">20</span>)
+</div></code></pre>
+<h2 id="proxy-models">Proxy Models</h2>
+<p>Proxy models are used when you want to change the behavior of a model without changing its fields or its database table. This is useful for adding custom methods or changing the default ordering of a model.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Model Inheritance Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseModel</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(BaseModel)</span>:</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Meta</span>:</span>
+        proxy = <span class="hljs-literal">True</span>
+        ordering = [<span class="hljs-string">'name'</span>]
+</div></code></pre>
+<h1 id="model-manager">Model Manager</h1>
+<p>In Django, a model manager is a class that manages database query operations for a model. It provides methods to retrieve and manipulate data in the database. You can create custom managers to add specific query methods that are not provided by the default manager.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># managers.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Custom Manager Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomManager</span><span class="hljs-params">(models.Manager)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_queryset</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> super().get_queryset().filter(is_active=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># Example filter for active records</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">custom_method</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.get_queryset().filter(is_active=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># Custom method to filter active records</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-keyword">from</span> .managers <span class="hljs-keyword">import</span> CustomManager
+<span class="hljs-comment"># Model Manager Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    active = models.BooleanField(default=<span class="hljs-literal">True</span>)
+    objects = CustomManager()
+    custom_objects = models.Manager()  <span class="hljs-comment"># Default manager</span>
+</div></code></pre>
+<h2 id="usage">Usage</h2>
+<p>To use the custom manager in your views or other parts of your application, you can call the custom methods defined in the manager. For example:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Student
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">student_list</span><span class="hljs-params">(request)</span>:</span>
+    students = Student.objects.custom_method()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'student_list.html'</span>, {<span class="hljs-string">'students'</span>: students})
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">student_active_list</span><span class="hljs-params">(request)</span>:</span>
+    active_students = Student.custom_objects.filter(is_active=<span class="hljs-literal">True</span>)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'active_student_list.html'</span>, {<span class="hljs-string">'students'</span>: active_students})
+</div></code></pre>
+<h1 id="model-relationships">Model Relationships</h1>
+<p>Django provides several types of relationships between models, allowing you to define how models are related to each other. The most common types of relationships are:</p>
+<ul>
+<li>One-to-One</li>
+<li>Many-to-One</li>
+<li>Many-to-Many</li>
+</ul>
+<h2 id="one-to-one-relationship">One-to-One Relationship</h2>
+<p>A one-to-one relationship is used when you want to create a unique link between two models.
+This is useful for extending a model with additional fields without creating a separate table.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># One-to-One Relationship Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span><span class="hljs-params">(models.Model)</span>:</span>
+    username = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Profile</span><span class="hljs-params">(models.Model)</span>:</span>
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=<span class="hljs-literal">True</span>)
+    bio = models.TextField()
+    location = models.CharField(max_length=<span class="hljs-number">100</span>)
+</div></code></pre>
+<blockquote>
+<p>So here, the <code>Profile</code> model has a one-to-one relationship with the <code>User</code> model, meaning each user can have only one profile and each profile belongs to only one user. So if anything happens(as mentioned <code>DELETE</code>) to <code>User</code> object related to <code>profile</code> The profile one will also change. but if anything happens with the profile it will not happen in the user.</p>
+</blockquote>
+<p>The behavioural options are -&gt;</p>
+<ul>
+<li>Cascade(will delete both if we try to delete the user)
+<ul>
+<li>limit_choices_to -&gt; 'is_staff': True (will let further option)</li>
+</ul>
+</li>
+<li>Protect( Will not let delete if we try to delete the user who has relations with profile)</li>
+<li>Do_Nothing -&gt; literally do nothing, let it happen(<em>Tame Impala</em>) well it will cause error if we do not describe any default behaviour</li>
+</ul>
+<h2 id="many-to-one-relationship">Many-to-One Relationship</h2>
+<p>A many-to-one relationship is used when you want to create a link between two models where one model can be related to multiple instances of another model. This is typically done using a foreign key.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Many-to-One Relationship Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><span class="hljs-params">(models.Model)</span>:</span>
+    title = models.CharField(max_length=<span class="hljs-number">100</span>)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name=<span class="hljs-string">'books'</span>)
+</div></code></pre>
+<blockquote>
+<p>In this example, the <code>Book</code> model has a foreign key to the <code>Author</code> model, meaning each book can have only one author, but an author can have multiple books. The <code>related_name</code> attribute allows you to access the related books from the author instance.
+It has same behavioural options as mentioned above in the one-to-one relationship.</p>
+</blockquote>
+<h2 id="many-to-many-relationship">Many-to-Many Relationship</h2>
+<p>A many-to-many relationship is used when you want to create a link between two models where each model can be related to multiple instances of the other model. This is typically done using a many-to-many field.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-comment"># Many-to-Many Relationship Example</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Course</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    students = models.ManyToManyField(Student, related_name=<span class="hljs-string">'courses'</span>)
+</div></code></pre>
+<blockquote>
+<p>here related name allows you to access the related courses from the student instance. Without it, you would have to use the default related name which is <code>course_set</code> for the <code>Course</code> model.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-comment"># Usage Example</span>
+student = Student.objects.get(id=<span class="hljs-number">1</span>)
+courses = student.courses.all()  <span class="hljs-comment"># Accessing related courses from the student instance</span>
+</div></code></pre>
+<h1 id="context-processors">Context Processors</h1>
+<p>Context processors are functions that take a request object and return a dictionary of context data that will be added to the context of every template rendered with the request. They are used to make certain data available globally in templates without having to pass it explicitly in every view.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># context_processors.py</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cart_items</span><span class="hljs-params">(request)</span>:</span>
+    cart_items = request.session.get(<span class="hljs-string">'cart_items'</span>, <span class="hljs-number">0</span>)  <span class="hljs-comment"># Example: Get cart items from session</span>
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">'cart_items'</span>: cart_items}  <span class="hljs-comment"># Return a dictionary with the context data</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+TEMPLATES = [
+    {
+        <span class="hljs-string">'BACKEND'</span>: <span class="hljs-string">'django.template.backends.django.DjangoTemplates'</span>,
+        <span class="hljs-string">'DIRS'</span>: [],
+        <span class="hljs-string">'APP_DIRS'</span>: <span class="hljs-literal">True</span>,
+        <span class="hljs-string">'OPTIONS'</span>: {
+            <span class="hljs-string">'context_processors'</span>: [
+                <span class="hljs-string">'django.template.context_processors.debug'</span>,
+                <span class="hljs-string">'django.template.context_processors.request'</span>,
+                <span class="hljs-string">'django.contrib.auth.context_processors.auth'</span>,
+                <span class="hljs-string">'django.contrib.messages.context_processors.messages'</span>,
+                <span class="hljs-comment"># Add your custom context processor here</span>
+                <span class="hljs-string">'yourapp.context_processors.cart_items'</span>,
+            ],
+        },
+    },
+]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">home</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'home.html'</span>)  <span class="hljs-comment"># The context processor will automatically add 'cart_items' to the context</span>
+</div></code></pre>
+<pre class="hljs"><code><div>| Use case                               | Why use a context processor?                 |
+| -------------------------------------- | -------------------------------------------- |
+| 🛒 Cart item count (like your example) | Show cart count in navbar on every page      |
+| 👤 Logged-in user profile info         | Display user's name or avatar in header      |
+| 🌐 Current site settings               | Site name, footer copyright, etc.            |
+| 🔔 Global messages/notifications       | Unread notifications in nav                  |
+| 📊 App-wide stats                      | Number of active users, trending posts, etc. |
+| 🎨 Theme/branding settings             | Dynamic colors, layout mode                  |
+| 🌍 Language or timezone                | For internationalization                     |
+</div></code></pre>
+<h1 id="asgi-server">Asgi server</h1>
+<p>ASGI (Asynchronous Server Gateway Interface) is a specification that allows for asynchronous communication between web servers and web applications. It is designed to handle asynchronous protocols like WebSockets, HTTP/2, and HTTP/3, making it suitable for modern web applications that require real-time communication.</p>
+<h2 id="configuring-asgi-in-django">Configuring ASGI in Django</h2>
+<h3 id="daphne">Daphne</h3>
+<pre class="hljs"><code><div>pip install daphne
+</div></code></pre>
+<p>run the following command to start the ASGI server:</p>
+<pre class="hljs"><code><div>daphne -p 8000 myproject.asgi:application
+</div></code></pre>
+<p>to run it by runserver command</p>
+<pre class="hljs"><code><div><span class="hljs-comment">#settings.py</span>
+INSTALLED_APPS = [
+    <span class="hljs-string">'daphne'</span>,
+    ...
+    
+]
+...
+ASGI_APPLICATION = <span class="hljs-string">'myproject.asgi.application'</span>
+</div></code></pre>
+<pre class="hljs"><code><div>python manage.py runserver --asgi
+</div></code></pre>
+<h3 id="uvicorn">Uvicorn</h3>
+<pre class="hljs"><code><div>pip install uvicorn
+</div></code></pre>
+<p>run the following command to start the ASGI server:</p>
+<pre class="hljs"><code><div>uvicorn myproject.asgi:application --host=0.0.0.0 --port=8000
+</div></code></pre>
+<h1 id="asynchronous-views">Asynchronous Views</h1>
+<p>Django supports asynchronous views, which allow you to write views that can handle requests asynchronously. This is useful for improving the performance of your application, especially when dealing with I/O-bound operations like database queries or external API calls.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">async_view</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">return</span> JsonResponse({<span class="hljs-string">'message'</span>: <span class="hljs-string">'This is an async view'</span>})
+</div></code></pre>
+<blockquote>
+<p>to call http request from server use <code>httpx</code> library</p>
+</blockquote>
+<pre class="hljs"><code><div>pip install httpx
+</div></code></pre>
+<pre><code>```python
+# views.py
+import httpx
+
+async def async_view(request):
+    async with httpx.AsyncClient() as client:
+        response = await client.get('https://jsonplaceholder.typicode.com/photos')
+    return JsonResponse({'data': response.json()})
+```
+</code></pre>
+<h2 id="example-of-asynchronous-view">Example of Asynchronous View</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> asyncio
+<span class="hljs-keyword">import</span> httpx
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">async_view</span><span class="hljs-params">(request)</span>:</span>
+    start_time = time.time()
+
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">with</span> httpx.AsyncClient() <span class="hljs-keyword">as</span> client:
+        tasks = [client.get(<span class="hljs-string">"https://jsonplaceholder.typicode.com/posts"</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">5</span>)]
+        responses = <span class="hljs-keyword">await</span> asyncio.gather(*tasks)
+
+    end_time = time.time()
+    time_taken = end_time - start_time
+
+    <span class="hljs-keyword">return</span> JsonResponse({
+        <span class="hljs-string">'status'</span>: <span class="hljs-string">'success'</span>,
+        <span class="hljs-string">'total_request'</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-string">'time_taken'</span>: <span class="hljs-string">f"<span class="hljs-subst">{time_taken:<span class="hljs-number">.2</span>f}</span> seconds"</span>,
+        <span class="hljs-string">'responses'</span>: [response.json() <span class="hljs-keyword">for</span> response <span class="hljs-keyword">in</span> responses]
+    })
+</div></code></pre>
+<blockquote>
+<p>asyncio is a Python library that provides support for asynchronous programming. It allows you to write concurrent code using the async/await syntax, making it easier to handle I/O-bound operations without blocking the main thread.</p>
+</blockquote>
+<h1 id="sync-to-async-and-async-to-sync">Sync to Async and Async to Sync</h1>
+<p>Django provides utilities to convert synchronous code to asynchronous and vice versa. This is useful when you need to call synchronous code from an asynchronous context or when you need to call asynchronous code from a synchronous context.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># sync_to_async</span>
+<span class="hljs-keyword">from</span> asgiref.sync <span class="hljs-keyword">import</span> sync_to_async, async_to_sync
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment"># Synchronous function to get data</span>
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">'data'</span>: <span class="hljs-string">'This is synchronous data'</span>}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">async_view</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># Convert synchronous function to asynchronous</span>
+    data = <span class="hljs-keyword">await</span> sync_to_async(get_data)()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'async_view.html'</span>, {<span class="hljs-string">'data'</span>: data})
+
+<span class="hljs-comment"># async_to_sync</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">async_get_data</span><span class="hljs-params">()</span>:</span>
+    <span class="hljs-comment"># Asynchronous function to get data</span>
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">'data'</span>: <span class="hljs-string">'This is asynchronous data'</span>}
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sync_view</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-comment"># Convert asynchronous function to synchronous</span>
+    data = async_to_sync(async_get_data)()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'sync_view.html'</span>, {<span class="hljs-string">'data'</span>: data})
+</div></code></pre>
+<blockquote>
+<p>without defining a helper function we can still use <code>sync_to_async</code> and <code>async_to_sync</code> directly in the view functions.<img src="file:///home/kisuke/Desktop/project/plan/django practice/day8/image-1.png" alt="alt text"></p>
+</blockquote>
+
+</body>
+</html>

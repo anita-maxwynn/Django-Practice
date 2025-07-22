@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.name }} - Student Detail{% endblock %}
+
+{% block content %}
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px;">
+            <h2 style="margin: 0; font-size: 2.5em;">👤 {{ student.name }}</h2>
+            <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 1.1em;">Student Profile</p>
+        </div>
+
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="display: grid; gap: 20px;">
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #667eea;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">🆔</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Student ID</strong>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.id }}</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #38a169;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">👤</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Full Name</strong>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.name }}</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #e53e3e;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">🎂</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Age</strong>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.age }} years old</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #764ba2;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">📧</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Email Address</strong>
+                        <a href="mailto:{{ student.email }}" style="color: #667eea; text-decoration: none; font-size: 1.1em;">{{ student.email }}</a>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #2b6cb0;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">📞</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Created At</strong>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.created_at }}</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 10px; border-left: 4px solid #2c5282;">
+                    <span style="font-size: 1.5em; margin-right: 15px;">📝</span>
+                    <div>
+                        <strong style="color: #2d3748; display: block;">Last Updated</strong>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.updated_at }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; text-align: center; padding-top: 30px; border-top: 2px dashed #e2e8f0;">
+                <h3 style="color: #2d3748; margin-bottom: 20px;">⚡ Quick Actions</h3>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="{% url 'student_update' student.id %}" class="btn btn-success">✏️ Edit Student</a>
+                    <a href="{% url 'student_delete' student.id %}" class="btn btn-danger">🗑️ Delete Student</a>
+                    <a href="{% url 'student_list' %}" class="btn btn-secondary">📋 Back to List</a>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center; color: #718096;">
+            <p style="font-size: 0.9em;">
+                <strong>Created:</strong> Student record #{{ student.id }} • 
+                <strong>Last updated:</strong> Recently
+            </p>
+        </div>
+    </div>
+{% endblock %}

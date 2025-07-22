@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Student - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #2d3748; margin: 0; font-size: 2.5em;">➕ Add New Student</h2>
+            <p style="color: #718096; margin: 10px 0 0 0; font-size: 1.1em;">Fill in the student information below</p>
+        </div>
+
+        <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <form method="post" style="display: grid; gap: 25px;">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="name">👤 Full Name</label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           placeholder="Enter student's full name"
+                           required
+                           style="background: #f7fafc;">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">🎂 Age</label>
+                    <input type="number" 
+                           id="age" 
+                           name="age" 
+                           placeholder="Enter student's age"
+                           min="1" 
+                           max="100"
+                           required
+                           style="background: #f7fafc;">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">📧 Email Address</label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           placeholder="Enter student's email address"
+                           required
+                           style="background: #f7fafc;">
+                </div>
+
+                <div style="border-top: 2px dashed #e2e8f0; padding-top: 25px; margin-top: 10px;">
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button type="submit" class="btn btn-primary" style="font-size: 1.1em; padding: 15px 30px;">
+                            ✅ Create Student
+                        </button>
+                        <a href="{% url 'student_list' %}" class="btn btn-secondary" style="font-size: 1.1em; padding: 15px 30px;">
+                            ❌ Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #e6fffa; border-radius: 10px; border-left: 4px solid #38a169;">
+            <h4 style="color: #2f855a; margin: 0 0 10px 0;">💡 Tips for Adding Students</h4>
+            <ul style="color: #2f855a; margin: 0; padding-left: 20px;">
+                <li>Make sure the email address is valid and unique</li>
+                <li>Age should be between 1 and 100 years</li>
+                <li>Full name should include both first and last name</li>
+                <li>All fields are required to create a student record</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.boxShadow = '0 0 15px rgba(102, 126, 234, 0.3)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+{% endblock %}

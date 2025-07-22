@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ student.name }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #e53e3e; margin: 0; font-size: 2.5em;">🗑️ Delete Student</h2>
+            <p style="color: #718096; margin: 10px 0 0 0; font-size: 1.1em;">Are you sure you want to delete this student?</p>
+        </div>
+
+        <div style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #fed7d7;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="background: #fed7d7; padding: 20px; border-radius: 50%; display: inline-block; margin-bottom: 20px;">
+                    <span style="font-size: 3em; color: #e53e3e;">⚠️</span>
+                </div>
+                <h3 style="color: #2d3748; margin: 0 0 10px 0;">This action cannot be undone!</h3>
+                <p style="color: #718096;">You are about to permanently delete the following student record:</p>
+            </div>
+
+            <div style="background: #f7fafc; padding: 25px; border-radius: 10px; margin-bottom: 30px; border-left: 4px solid #e53e3e;">
+                <div style="display: grid; gap: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #2d3748;">👤 Name:</span>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.name }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #2d3748;">🎂 Age:</span>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.age }} years old</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #2d3748;">📧 Email:</span>
+                        <span style="color: #4a5568; font-size: 1.1em;">{{ student.email }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #2d3748;">🆔 Student ID:</span>
+                        <span style="color: #4a5568; font-size: 1.1em;">#{{ student.id }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post" style="text-align: center;">
+                {% csrf_token %}
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <button type="submit" class="btn btn-danger" style="font-size: 1.1em; padding: 15px 30px;">
+                        🗑️ Yes, Delete Student
+                    </button>
+                    <a href="{% url 'student_detail' student.id %}" class="btn btn-secondary" style="font-size: 1.1em; padding: 15px 30px;">
+                        ❌ No, Keep Student
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #fef5e7; border-radius: 10px; border-left: 4px solid #d69e2e;">
+            <h4 style="color: #b7791f; margin: 0 0 10px 0;">🔄 Alternative Actions</h4>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'student_update' student.id %}" class="btn btn-success" style="font-size: 0.9em;">
+                    ✏️ Edit Instead
+                </a>
+                <a href="{% url 'student_list' %}" class="btn btn-primary" style="font-size: 0.9em;">
+                    📋 Back to List
+                </a>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center; color: #718096;">
+            <p style="font-size: 0.9em;">
+                💡 <strong>Tip:</strong> Consider editing the student information instead of deleting if you just need to make corrections.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Add confirmation dialog
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const studentName = "{{ student.name }}";
+            const confirmed = confirm(`Are you absolutely sure you want to delete ${studentName}? This action cannot be undone.`);
+            
+            if (!confirmed) {
+                e.preventDefault();
+            }
+        });
+
+        // Add hover effects to the danger button
+        const deleteButton = document.querySelector('.btn-danger');
+        deleteButton.addEventListener('mouseenter', function() {
+            this.style.boxShadow = '0 8px 25px rgba(229, 62, 62, 0.4)';
+        });
+        
+        deleteButton.addEventListener('mouseleave', function() {
+            this.style.boxShadow = 'none';
+        });
+    </script>
+{% endblock %}
