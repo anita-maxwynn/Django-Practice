@@ -2224,6 +2224,408 @@ async def async_view(request):
 <blockquote>
 <p>without defining a helper function we can still use <code>sync_to_async</code> and <code>async_to_sync</code> directly in the view functions.<img src="day8/image-1.png" alt="alt text"></p>
 </blockquote>
+<h1 id="day9">day9</h1>
+<h1 id="fix-css-static-files">Fix CSS static files</h1>
+<p>In <code>runserver</code> the static files are served. But in case of <code>daphne</code> and <code>uvicorn</code> the static files are not served by default.</p>
+<h2 id="1-development">1 (Development)</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># asgi.py</span>
+...
+<span class="hljs-keyword">from</span> django.contrib.staticfiles.handlers <span class="hljs-keyword">import</span> ASGIStaticFilesHandler
+
+application = ASGIStaticFilesHandler(
+    get_asgi_application()
+)
+</div></code></pre>
+<h2 id="2-production">2 (Production)</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+...
+STATIC_ROOT = BASE_DIR / <span class="hljs-string">"static"</span>
+
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+...
+<span class="hljs-keyword">from</span> django.contrib.staticfiles.urls <span class="hljs-keyword">import</span> staticfiles_urlpatterns
+...
+<span class="hljs-keyword">if</span> settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># collect static files</span>
+python manage.py collectstatic
+</div></code></pre>
+<h1 id="django-async-orm">Django Async ORM</h1>
+<p><img src="day9/image.png" alt="alt text"></p>
+<p><img src="day9/image-1.png" alt="alt text"></p>
+<p>Asynchronous ORM for Django, which allows you to use Django's ORM in an asynchronous context. It is built on top of Django's ORM and provides a simple and easy-to-use interface for working with databases in an asynchronous way.
+The available methods are:</p>
+<ul>
+<li><code>acount()</code>: Returns the number of objects matching the query.</li>
+<li><code>aget()</code>: Returns a single object matching the query.</li>
+<li><code>afirst()</code>: Returns the first object matching the query.</li>
+<li><code>alast()</code>: Returns the last object matching the query.</li>
+<li><code>aexists()</code>: Returns True if the query has any results, False otherwise.</li>
+<li><code>aget_or_create()</code>: Returns a single object matching the query, or creates it if it does not exist.</li>
+<li><code>aget_or_none()</code>: Returns a single object matching the query, or None if it does not exist.</li>
+<li><code>alatest()</code>: Returns the last object matching the query.</li>
+<li><code>aearliest()</code>: Returns the first object matching the query.</li>
+<li><code>aexplains()</code>: Returns a list of objects matching the query.</li>
+<li><code>aiterate()</code>: Returns an asynchronous iterator over the objects matching the query.</li>
+<li><code>aprefetch_related()</code>: Prefetches related objects for the query.</li>
+<li><code>abulk_create()</code>: Creates multiple objects in bulk.</li>
+<li><code>abulk_update()</code>: Updates multiple objects in bulk.</li>
+<li><code>abulk_delete()</code>: Deletes multiple objects in bulk.</li>
+<li><code>aupdate()</code>: Updates the objects matching the query.</li>
+<li><code>adelete()</code>: Deletes the objects matching the query.</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment"># Example</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">home</span><span class="hljs-params">(request)</span>:</span>
+    result = MyModel.objects.all()
+    <span class="hljs-keyword">async</span> <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> result:
+        print(obj)
+    <span class="hljs-keyword">await</span> MyModel.objects.acreate(name=<span class="hljs-string">"New Object"</span>, value=<span class="hljs-number">42</span>)
+    data = [{<span class="hljs-string">"id"</span>: obj.id, <span class="hljs-string">"name"</span>: obj.name, <span class="hljs-string">"value"</span>: obj.value} <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> result]
+    hello = <span class="hljs-keyword">await</span> MyModel.objects.aget(pk=<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">await</span> hello.adelete()
+
+    <span class="hljs-keyword">return</span> JsonResponse(data, safe=<span class="hljs-literal">False</span>)
+</div></code></pre>
+<h1 id="async-django-middleware">Async Django Middleware</h1>
+<p>In django, middleware is a way to process requests globally before they reach the view or after the view has processed them.
+now by default, middleware is synchronous, but you can create asynchronous middleware by using decorators.</p>
+<h2 id="functional-decorators">functional decorators</h2>
+<pre class="hljs"><code><div><span class="hljs-comment"># Example</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+<span class="hljs-keyword">from</span> django.utils.decorators <span class="hljs-keyword">import</span> sync_and_async_middleware,sync_only_middleware,async_only_middleware
+
+<span class="hljs-meta">@sync_only_middleware</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_sync_middleware</span><span class="hljs-params">(get_response)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">middleware</span><span class="hljs-params">(request)</span>:</span>
+        <span class="hljs-comment"># Do something before the view is called</span>
+        response = get_response(request)
+        <span class="hljs-comment"># Do something after the view is called</span>
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">return</span> middleware
+
+<span class="hljs-meta">@async_only_middleware</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_async_middleware</span><span class="hljs-params">(get_response)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">middleware</span><span class="hljs-params">(request)</span>:</span>
+        <span class="hljs-comment"># Do something before the view is called</span>
+        response = <span class="hljs-keyword">await</span> get_response(request)
+        <span class="hljs-comment"># Do something after the view is called</span>
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">return</span> middleware
+
+
+<span class="hljs-meta">@sync_and_async_middleware</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_middleware</span><span class="hljs-params">(get_response)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">middleware</span><span class="hljs-params">(request)</span>:</span>
+        <span class="hljs-keyword">if</span> iscoroutinefunction(get_response):
+            <span class="hljs-comment"># If get_response is an async function</span>
+            response = <span class="hljs-keyword">await</span> get_response(request)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># If get_response is a sync function</span>
+            response = get_response(request)
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">return</span> middleware
+</div></code></pre>
+<p>now sync_and_async_middleware is a decorator that allows you to create middleware that can handle both synchronous and asynchronous requests. it checks the type using <code>iscoroutinefunction</code> and calls the appropriate function accordingly.
+It is said that one should not use sync_and_async_middleware in production, as it can lead to performance issues. Instead, you should use either sync_only_middleware or async_only_middleware depending on your use case.</p>
+<h2 id="class-based-middleware">Class-based middleware</h2>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> asyncio <span class="hljs-keyword">import</span> iscoroutinefunction
+<span class="hljs-keyword">from</span> django.utils.asyncio <span class="hljs-keyword">import</span> markcoroutinefunction
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyMiddleware</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, get_response)</span>:</span>
+        self.get_response = get_response
+        <span class="hljs-comment"># Adapt self.async_capable based on the type of get_response</span>
+        <span class="hljs-keyword">if</span> iscoroutinefunction(get_response):
+            <span class="hljs-comment"># If get_response is an async function, mark this middleware as async</span>
+            markcoroutinefunction(self)
+            self.async_capable = <span class="hljs-literal">True</span>
+            self.sync_capable = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># If get_response is a sync function, this middleware is sync</span>
+            self.async_capable = <span class="hljs-literal">False</span>
+            self.sync_capable = <span class="hljs-literal">True</span>
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__call__</span><span class="hljs-params">(self, request)</span>:</span>
+        <span class="hljs-comment"># Logic before the view is called</span>
+        response = <span class="hljs-keyword">await</span> self.get_response(request)
+        <span class="hljs-comment"># Logic after the view is called</span>
+        <span class="hljs-keyword">return</span> response
+</div></code></pre>
+<h1 id="class-based-views">Class-based views</h1>
+<p>class-based views in Django are a way to organize your views in a more structured way. They allow you to define your views as classes, which can make your code more reusable and easier to maintain.</p>
+<h1 id="example">Example</h1>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views <span class="hljs-keyword">import</span> View
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyView</span><span class="hljs-params">(View)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(self, request)</span>:</span>
+        data = {<span class="hljs-string">"message"</span>: <span class="hljs-string">"Hello, world!"</span>}
+        <span class="hljs-keyword">return</span> JsonResponse(data)
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post</span><span class="hljs-params">(self, request)</span>:</span>
+        data = {<span class="hljs-string">"message"</span>: <span class="hljs-string">"Hello, world!"</span>}
+        <span class="hljs-keyword">return</span> JsonResponse(data, status=<span class="hljs-number">201</span>)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> MyView
+
+urlpatterns = [
+    path(<span class="hljs-string">'my-view/'</span>, MyView.as_view(), name=<span class="hljs-string">'my_view'</span>),
+]
+</div></code></pre>
+<p>to access the views like /my-view/<a href="id:int">id:int</a> you can use the <code>get</code> method in the class-based view.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views <span class="hljs-keyword">import</span> View
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyView</span><span class="hljs-params">(View)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(self, request, id)</span>:</span>
+        obj = MyModel.objects.get(pk=id)
+        data = {<span class="hljs-string">"message"</span>: obj.name}
+        <span class="hljs-keyword">return</span> JsonResponse(data)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> MyView
+
+urlpatterns = [
+    path(<span class="hljs-string">'my-view/&lt;int:id&gt;/'</span>, MyView.as_view(), name=<span class="hljs-string">'my_view'</span>),
+]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyView</span><span class="hljs-params">(View)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(self, request, *args, **kwargs)</span>:</span>
+        id = self.kwargs.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-keyword">return</span> JsonResponse({
+            <span class="hljs-string">"status"</span>: <span class="hljs-string">"success"</span>,
+            <span class="hljs-string">"message"</span>: <span class="hljs-string">f"Class view accessed with id: <span class="hljs-subst">{id}</span>"</span>
+        })
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post</span><span class="hljs-params">(self, request, *args, **kwargs)</span>:</span>
+        id = self.kwargs.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-keyword">return</span> JsonResponse({
+            <span class="hljs-string">"status"</span>: <span class="hljs-string">"success"</span>,
+            <span class="hljs-string">"message"</span>: <span class="hljs-string">"Post request received"</span>,
+            <span class="hljs-string">"data"</span>: {<span class="hljs-string">"id"</span>: id}
+        })
+</div></code></pre>
+<h1 id="tewmplate-views">Tewmplate Views</h1>
+<p>Template views are a way to render templates in Django using class-based views. They provide a simple way to render templates without having to write a lot of boilerplate code.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> TemplateView
+
+urlpatterns = [
+    path(<span class="hljs-string">'template-view/'</span>, TemplateView.as_view(template_name=<span class="hljs-string">'myapp/template.html'</span>), name=<span class="hljs-string">'template_view'</span>),
+]
+</div></code></pre>
+<p>We can also do it using views.py</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> TemplateView
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyTemplateView</span><span class="hljs-params">(TemplateView)</span>:</span>
+    template_name = <span class="hljs-string">'myapp/template.html'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span><span class="hljs-params">(self, **kwargs)</span>:</span>
+        context = super().get_context_data(**kwargs)
+        context[<span class="hljs-string">'message'</span>] = <span class="hljs-string">'Hello, world!'</span>
+        <span class="hljs-keyword">return</span> context
+</div></code></pre>
+<h1 id="redirect-views">Redirect Views</h1>
+<p>Redirect views are a way to redirect users to a different URL in Django using class-based views.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> RedirectView
+
+urlpatterns = [
+    path(<span class="hljs-string">'redirect-view/'</span>, RedirectView.as_view(url=<span class="hljs-string">'/new-url/'</span>), name=<span class="hljs-string">'redirect_view'</span>),
+    path(<span class="hljs-string">'new-url/'</span>, TemplateView.as_view(template_name=<span class="hljs-string">'myapp/template.html'</span>), name=<span class="hljs-string">'new_url'</span>),
+    path(<span class="hljs-string">'old-url/'</span>, RedirectView.as_view(pattern_name=<span class="hljs-string">'new_url'</span>), name=<span class="hljs-string">'old_url'</span>),
+]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> RedirectView
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyRedirectView</span><span class="hljs-params">(RedirectView)</span>:</span>
+    url = <span class="hljs-string">'/new-url/'</span>
+    permanent = <span class="hljs-literal">False</span>  <span class="hljs-comment"># Set to True for a permanent redirect (HTTP 301)</span>
+</div></code></pre>
+<h1 id="generic-class-based-views">Generic class-based views</h1>
+<p>Generic class-based views are a way to create views that handle common tasks in Django, such as displaying a list of objects, creating a new object, updating an existing object, or deleting an object.
+Django provides several built-in generic class-based views that you can use to quickly create these views.</p>
+<h2 id="display-views">Display Views</h2>
+<ul>
+<li>
+<h3 id="listview">ListView:-</h3>
+<p>The ListView is used to display a list of objects from a model. It inherits from the <code>MultipleObjectMixin</code>,<code>templateresponsemixin</code> and <code>baseview</code>, <code>MultipleObjectMixin</code>,<code>View</code> classes.` and provides pagination support.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.list <span class="hljs-keyword">import</span> ListView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyListView</span><span class="hljs-params">(ListView)</span>:</span>
+    model = MyModel
+</div></code></pre>
+<blockquote>
+<p>Default template name for ListView is <code>&lt;model_name&gt;_list.html</code>. For example, if your model is <code>MyModel</code>, the default template will be <code>mymodel_list.html</code>. Also the context variable will be <code>&lt;ModelName&gt;_list</code> by  default.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.list <span class="hljs-keyword">import</span> ListView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyListView</span><span class="hljs-params">(ListView)</span>:</span>
+    model = MyModel
+    template_name_suffix = <span class="hljs-string">'all'</span> <span class="hljs-comment"># to change the default template name's suffix</span>
+    context_object_name = <span class="hljs-string">'my_objects'</span>
+    ordering = [<span class="hljs-string">'name'</span>]
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyListView2</span><span class="hljs-params">(ListView)</span>:</span>
+    model = MyModel
+    template_name = <span class="hljs-string">'myapp/my_list.html'</span>
+    context_object_name = <span class="hljs-string">'my_objects'</span> <span class="hljs-comment"># to change the context name</span>
+    <span class="hljs-comment"># to customize the list query </span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_queryset</span><span class="hljs-params">(Self)</span>:</span>
+        <span class="hljs-keyword">return</span> MyModel.objects.filter(name__startswith=<span class="hljs-string">'A'</span>)
+    <span class="hljs-comment"># to add more context</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span><span class="hljs-params">(self, **args, **kwargs)</span>:</span>
+        context = super().get_context_data(**args, **kwargs)
+        context[<span class="hljs-string">'message'</span>] = <span class="hljs-string">'Hello, world!'</span>
+        <span class="hljs-keyword">return</span> context
+ 
+</div></code></pre>
+</li>
+<li>
+<h3 id="detailview">DetailView:-</h3>
+<p>The DetailView is used to display a single object from a model.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># view.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.detail <span class="hljs-keyword">import</span> DetailView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyDetailView</span><span class="hljs-params">(DetailView)</span>:</span>
+    model = MyModel
+</div></code></pre>
+<blockquote>
+<p>Default template name for DetailView is <code>&lt;model_name&gt;_detail.html</code>. The get field is <code>pk</code> by default.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> MyDetailsView
+
+urlpatterns =[
+    path(<span class="hljs-string">'object/&lt;int:pk&gt;/'</span>, MyDetailView.as_view(), name=<span class="hljs-string">'my_detail'</span>)
+]
+</div></code></pre>
+<p>to change that:-</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> django.views.generic.detail <span class="hljs-keyword">import</span> DetailView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyDetailView</span><span class="hljs-params">(DetailView)</span>:</span>
+    model = MyModel
+    pk_url_kwarg = <span class="hljs-string">'my_id'</span>
+    template_name = <span class="hljs-string">'myapp/my_detail.html'</span>
+    context_object_name = <span class="hljs-string">'my_object'</span>
+    <span class="hljs-comment"># template_suffix = '_custom'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span><span class="hljs-params">(self,**args,**kwargs)</span>:</span>
+        context = super().get_context_data(**args,**kwargs)
+        context[<span class="hljs-string">'message'</span>] = <span class="hljs-string">'Hello, world!'</span>
+        <span class="hljs-keyword">return</span> context
+</div></code></pre>
+</li>
+<li>
+<h3 id="formview">FormView:-</h3>
+<p>The FormView is used to display a form and handle form submission. It inherits from the <code>FormMixin</code> and <code>BaseView</code> classes.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.edit <span class="hljs-keyword">import</span> FormView
+<span class="hljs-keyword">from</span> myapp.forms <span class="hljs-keyword">import</span> MyForm
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyFormView</span><span class="hljs-params">(FormView)</span>:</span>
+    template_name = <span class="hljs-string">'myapp/my_form.html'</span>
+    form_class = MyForm
+    success_url = <span class="hljs-string">'/success/'</span>  <span class="hljs-comment"># URL to redirect after successful form submission</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">form_valid</span><span class="hljs-params">(self, form)</span>:</span>
+        <span class="hljs-comment"># Logic to handle the form submission</span>
+        form_data = form.cleaned_data
+        MyModel.objects.create(**form_data)
+        <span class="hljs-comment"># For example, save the form data or send an email</span>
+        <span class="hljs-keyword">return</span> super().form_valid(form)
+</div></code></pre>
+<blockquote>
+<p>Default template name for FormView is <code>&lt;form_class_name&gt;_form.html</code>. For example, if your form class is <code>MyForm</code>, the default template will be <code>myform_form.html</code>.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> MyFormView
+urlpatterns = [
+    path(<span class="hljs-string">'form/'</span>, MyFormView.as_view(), name=<span class="hljs-string">'my_form'</span>),
+]
+</div></code></pre>
+</li>
+<li>
+<h3 id="createview">CreateView:-</h3>
+<p>The CreateView is used to create a new object in the database. It inherits from the <code>SingleObjectTemplateMixin</code>, <code>TemplateResponseMixin</code>, and <code>BaseCreateView</code> classes.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.edit <span class="hljs-keyword">import</span> CreateView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-keyword">from</span> myapp.forms <span class="hljs-keyword">import</span> MyForm
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyCreateView</span><span class="hljs-params">(CreateView)</span>:</span>
+    model = MyModel
+    fields = [<span class="hljs-string">'name'</span>, <span class="hljs-string">'value'</span>]  <span class="hljs-comment"># Fields to include in the form</span>
+    <span class="hljs-comment"># form_class = MyForm  # Use a custom form class if needed</span>
+    template_name = <span class="hljs-string">'myapp/mymodel_form.html'</span>
+    success_url = <span class="hljs-string">'/success/'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_absolute_url</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"/mymodel/<span class="hljs-subst">{self.object.pk}</span>/"</span>  <span class="hljs-comment"># Redirect to the detail view of the created object</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_form</span><span class="hljs-params">(self, form_class=None)</span>:</span>
+        form = super().get_form(form_class)
+        <span class="hljs-comment"># Customize the form if needed</span>
+        form.fields[<span class="hljs-string">'name'</span>].label = <span class="hljs-string">'Custom Name'</span>
+        form.widgets[<span class="hljs-string">'value'</span>].attrs.update({<span class="hljs-string">'placeholder'</span>: <span class="hljs-string">'Enter value'</span>})
+        <span class="hljs-keyword">return</span> form
+</div></code></pre>
+<blockquote>
+<p>Default template name for CreateView is <code>&lt;model_name&gt;_form.html</code>. For example, if your model is <code>MyModel</code>, the default template will be <code>mymodel_form.html</code>.</p>
+</blockquote>
+</li>
+<li>
+<h3 id="updateview">UpdateView:-</h3>
+<p>The UpdateView is used to update an existing object in the database. It inherits from the <code>SingleObjectTemplateMixin</code>, <code>TemplateResponseMixin</code>, and <code>BaseUpdateView</code>,<code>ModelFormMixin</code>,<code>FormMixin</code>,<code>SingleObjectMixin</code> classes.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.edit <span class="hljs-keyword">import</span> UpdateView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-keyword">from</span> myapp.forms <span class="hljs-keyword">import</span> MyForm
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyUpdateView</span><span class="hljs-params">(UpdateView)</span>:</span>
+    model = MyModel
+    fields = [<span class="hljs-string">'name'</span>, <span class="hljs-string">'value'</span>]  <span class="hljs-comment"># Fields to include in the form</span>
+    <span class="hljs-comment"># form_class = MyForm  # Use a custom form class if needed</span>
+    template_name = <span class="hljs-string">'myapp/mymodel_form.html'</span>
+    success_url = <span class="hljs-string">'/success/'</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_object</span><span class="hljs-params">(self, queryset=None)</span>:</span>
+        <span class="hljs-keyword">return</span> MyModel.objects.get(pk=self.kwargs[<span class="hljs-string">'pk'</span>])  <span class="hljs-comment"># Get the object to update</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_form</span><span class="hljs-params">(self, form_class=None)</span>:</span>
+        form = super().get_form(form_class)
+        <span class="hljs-comment"># Customize the form if needed</span>
+        form.fields[<span class="hljs-string">'name'</span>].label = <span class="hljs-string">'Custom Name'</span>
+        <span class="hljs-keyword">return</span> form
+</div></code></pre>
+</li>
+<li>
+<h3 id="deleteview">DeleteView:-</h3>
+<p>The DeleteView is used to delete an object from the database. It inherits from the <code>SingleObjectTemplateMixin</code>, <code>TemplateResponseMixin</code>, and <code>BaseDeleteView</code>,<code>SingleObjectMixin</code> classes.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic.edit <span class="hljs-keyword">import</span> DeleteView
+<span class="hljs-keyword">from</span> myapp.models <span class="hljs-keyword">import</span> MyModel
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> reverse_lazy
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyDeleteView</span><span class="hljs-params">(DeleteView)</span>:</span>
+    model = MyModel
+    template_name = <span class="hljs-string">'myapp/mymodel_confirm_delete.html'</span>
+    success_url = reverse_lazy(<span class="hljs-string">'my_list'</span>)
+
+
+</div></code></pre>
+</li>
+</ul>
 
 </body>
 </html>

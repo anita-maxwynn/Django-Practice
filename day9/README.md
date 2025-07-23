@@ -404,4 +404,34 @@ Django provides several built-in generic class-based views that you can use to q
     The UpdateView is used to update an existing object in the database. It inherits from the `SingleObjectTemplateMixin`, `TemplateResponseMixin`, and `BaseUpdateView`,`ModelFormMixin`,`FormMixin`,`SingleObjectMixin` classes.
     
     ```python
-    
+    # views.py
+    from django.views.generic.edit import UpdateView
+    from myapp.models import MyModel
+    from myapp.forms import MyForm
+    class MyUpdateView(UpdateView):
+        model = MyModel
+        fields = ['name', 'value']  # Fields to include in the form
+        # form_class = MyForm  # Use a custom form class if needed
+        template_name = 'myapp/mymodel_form.html'
+        success_url = '/success/'
+        
+        def get_object(self, queryset=None):
+            return MyModel.objects.get(pk=self.kwargs['pk'])  # Get the object to update
+        def get_form(self, form_class=None):
+            form = super().get_form(form_class)
+            # Customize the form if needed
+            form.fields['name'].label = 'Custom Name'
+            return form
+    ```
+- ### DeleteView:- 
+    The DeleteView is used to delete an object from the database. It inherits from the `SingleObjectTemplateMixin`, `TemplateResponseMixin`, and `BaseDeleteView`,`SingleObjectMixin` classes.
+    ```python
+    # views.py
+    from django.views.generic.edit import DeleteView
+    from myapp.models import MyModel
+    from django.urls import reverse_lazy
+    class MyDeleteView(DeleteView):
+        model = MyModel
+        template_name = 'myapp/mymodel_confirm_delete.html'
+        success_url = reverse_lazy('my_list')
+   
