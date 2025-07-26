@@ -2626,6 +2626,429 @@ urlpatterns = [
 </div></code></pre>
 </li>
 </ul>
+<h1 id="day10">day10</h1>
+<h1 id="mixins">Mixins</h1>
+<p>Mixins are reusable pieces of code that can be included in multiple classes. They allow for code reuse and can help keep your codebase DRY (Don't Repeat Yourself).</p>
+<p>They are used mainly for restricting the inheritance of classes, allowing you to include functionality without needing to inherit from a base class.
+it also let's you access the methods and properties of the mixin in the class that includes it.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># mixins.py</span>
+<span class="hljs-keyword">from</span> django.contrib.auth.mixins <span class="hljs-keyword">import</span> UserPassesTestMixin
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> HttpResponseForbidden
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> redirect
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomUserPassesTestMixin</span><span class="hljs-params">(UserPassesTestMixin)</span>:</span>
+    <span class="hljs-string">"""
+    A custom mixin that checks if the user is authenticated and has a specific attribute.
+    If not, it redirects to a 'not allowed' page.
+    """</span>
+    <span class="hljs-comment"># main function that checks the condition</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">test_func</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.request.user.is_authenticated <span class="hljs-keyword">and</span> hasattr(self.request.user, <span class="hljs-string">'custom_attribute'</span>) <span class="hljs-keyword">and</span> self.request.user.custom_attribute == <span class="hljs-string">'value'</span>
+    
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handle_no_permission</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">if</span> self.request.user.is_authenticated:
+            <span class="hljs-keyword">return</span> HttpResponseForbidden(<span class="hljs-string">"You do not have permission to access this page."</span>)
+        <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'login'</span>)
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> TemplateView
+<span class="hljs-keyword">from</span> .mixins <span class="hljs-keyword">import</span> CustomUserPassesTestMixin
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyView</span><span class="hljs-params">(CustomUserPassesTestMixin, TemplateView)</span>:</span>
+    template_name = <span class="hljs-string">'my_template.html'</span>
+</div></code></pre>
+<h1 id="decorators-in-class-based-viewscbvs">Decorators in Class-Based Views(CBVs)</h1>
+<p>Decorators can also be used with class-based views to add functionality or restrict access. They can be applied to methods within the class or to the class itself.
+Here's an example of using a decorator with a class-based view:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.contrib.auth.decorators <span class="hljs-keyword">import</span> login_required
+<span class="hljs-keyword">from</span> django.utils.decorators <span class="hljs-keyword">import</span> method_decorator
+
+<span class="hljs-comment">## If you don't want to write dispatch method, you can use the decorator directly on the class</span>
+<span class="hljs-comment"># @method_decorator(login_required, name='dispatch')</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClassBasedView</span><span class="hljs-params">(TemplateView)</span>:</span>
+    template_name = <span class="hljs-string">'my_template.html'</span>
+    <span class="hljs-comment"># To apply the decorator to the entire class, use dispach method</span>
+    <span class="hljs-comment"># This will ensure that the login_required decorator is applied to all HTTP methods (GET, POST, etc.)</span>
+<span class="hljs-meta">    @method_decorator(login_required)</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dispatch</span><span class="hljs-params">(self, *args, **kwargs)</span>:</span>
+        <span class="hljs-keyword">return</span> super().dispatch(*args, **kwargs)
+<span class="hljs-comment"># Using the decorator on a specific method</span>
+<span class="hljs-meta">    @method_decorator(login_required)</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(self, request, *args, **kwargs)</span>:</span>
+        <span class="hljs-keyword">return</span> super().get(request, *args, **kwargs)
+</div></code></pre>
+<h1 id="built-in-authentication">Built-in Authentication</h1>
+<blockquote>
+<p>have to make an app named <code>accounts</code> and add it to the <code>INSTALLED_APPS</code> in settings.py
+also have to make templates folder in the app and create a <code>registration</code> folder inside it, then create a <code>login.html</code> file inside the <code>registration</code> folder.
+To see all the built-in authentication views, you can run the command <code>python manage.py show_urls</code> after adding the <code>django.contrib.auth</code> app to your <code>INSTALLED_APPS</code>.</p>
+</blockquote>
+<p><img src="day10/image.png" alt="alt text"></p>
+<blockquote>
+<p>as u can see the built-in authentication views are in the virtual environment, so you can use them directly in your project. to change the templates of these views, you can create a folder named <code>registration</code> in your templates folder and create the corresponding HTML files for each view.
+<img src="day10/image-1.png" alt="alt text">
+If we want to still customize the whole thing(not the logic part) but the templates part
+<img src="day10/image-2.png" alt="alt text"></p>
+</blockquote>
+<h1 id="async-class-based-views">Async class-based views</h1>
+<p>Django supports asynchronous class-based views, allowing you to write views that can handle requests asynchronously.
+To use them the whole process is same as the normal class-based views, just declare the functions as async functions using the <code>async def</code> syntax.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.http <span class="hljs-keyword">import</span> JsonResponse
+<span class="hljs-keyword">from</span> django.views <span class="hljs-keyword">import</span> View
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyAsyncView</span><span class="hljs-params">(View)</span>:</span>
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(self, request, *args, **kwargs)</span>:</span>
+        <span class="hljs-comment"># Your async logic here</span>
+        data = {<span class="hljs-string">'message'</span>: <span class="hljs-string">'This is an async response'</span>}
+        <span class="hljs-keyword">return</span> JsonResponse(data)
+</div></code></pre>
+<p>but if you declare one method as async, you have to declare all the methods as async in the class.</p>
+<h1 id="namespaces-in-django">Namespaces in Django</h1>
+<p>so there might be a case where you want to use the same name for different views, in that case you can use namespaces to differentiate between them.
+To use namespaces, you can define them in your <code>urls.py</code> file. Here's an example</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># urls.py</span>
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path, include
+<span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> views
+
+app_name = <span class="hljs-string">'my_app'</span>
+
+urlpatterns = [
+    path(<span class="hljs-string">''</span>, views.MyView.as_view(), name=<span class="hljs-string">'my_view'</span>),
+    path(<span class="hljs-string">'another/'</span>, views.AnotherView.as_view(), name=<span class="hljs-string">'another_view'</span>),
+]
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> TemplateView
+<span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> redirect
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyView</span><span class="hljs-params">(TemplateView)</span>:</span>
+    template_name = <span class="hljs-string">'my_app/my_template.html'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AnotherView</span><span class="hljs-params">(TemplateView)</span>:</span>
+    template_name = <span class="hljs-string">'my_app/another_template.html'</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">redirect_to_my_view</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'my_app:my_view'</span>)  <span class="hljs-comment"># Use the namespace to redirect to the view</span>
+</div></code></pre>
+<h1 id="annotations-in-django">Annotations in Django</h1>
+<p>Annotations in Django allow you to add additional data to your querysets. This can be useful for performing calculations or aggregations on your data without having to write raw SQL queries.
+You can use the <code>annotate()</code> method on a queryset to add annotations. Here's an example:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.name
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><span class="hljs-params">(models.Model)</span>:</span>
+    title = models.CharField(max_length=<span class="hljs-number">100</span>)
+    price = models.DecimalField(max_digits=<span class="hljs-number">5</span>, decimal_places=<span class="hljs-number">2</span>)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name=<span class="hljs-string">'books'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.title
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Book
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">book_list</span><span class="hljs-params">(request)</span>:</span>
+    books = Book.objects.annotate(discounted_price=F(<span class="hljs-string">'price'</span>) * <span class="hljs-number">0.8</span>)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'book_list.html'</span>, {<span class="hljs-string">'books'</span>: books})
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">author_book_count</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Count
+    authors = Author.objects.annotate(book_count=Count(<span class="hljs-string">'books'</span>))
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'author_book_count.html'</span>, {<span class="hljs-string">'authors'</span>: authors})
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">author_book_price</span><span class="hljs-params">(request)</span>:</span>
+    <span class="hljs-keyword">from</span> django.db.models <span class="hljs-keyword">import</span> Sum
+    authors = Author.objects.annotate(total_price=Sum(<span class="hljs-string">'books__price'</span>))
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'author_book_price.html'</span>, {<span class="hljs-string">'authors'</span>: authors})
+</div></code></pre>
+<h1 id="select-related-and-prefetch-related">Select Related and Prefetch Related</h1>
+<p><code>select_related</code> and <code>prefetch_related</code> are methods used to optimize database queries in Django. They help reduce the number of queries made to the database when accessing related objects.</p>
+<ul>
+<li>
+<p><code>select_related</code>: This method is used for single-valued relationships (ForeignKey and OneToOneField). It performs a SQL join and retrieves related objects in a single query. It is useful when the relation is one-to-one or many-to-one.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.name
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span><span class="hljs-params">(models.Model)</span>:</span>
+    title = models.CharField(max_length=<span class="hljs-number">100</span>)
+    price = models.DecimalField(max_digits=<span class="hljs-number">5</span>, decimal_places=<span class="hljs-number">2</span>)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name=<span class="hljs-string">'books'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.title
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Book
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">book_list</span><span class="hljs-params">(request)</span>:</span>
+    books = Book.objects.select_related(<span class="hljs-string">'author'</span>).all()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'book_list.html'</span>, {<span class="hljs-string">'books'</span>: books})
+</div></code></pre>
+<blockquote>
+<p>In normal cases the sql query is like this</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> book;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> author <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">IN</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, ...);
+</div></code></pre>
+<blockquote>
+<p>But with <code>select_related</code>, it becomes:</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">SELECT</span> book.*, author.* <span class="hljs-keyword">FROM</span> book <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> author <span class="hljs-keyword">ON</span> book.author_id = author.id;
+</div></code></pre>
+</li>
+<li>
+<p><code>prefetch_related</code>: This method is used for multi-valued relationships (ManyToManyField and reverse ForeignKey). It performs a separate query for the related objects and does the joining in Python. It is useful when the relation is many-to-many or one-to-many.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># models.py</span>
+<span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Teacher</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.name
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span><span class="hljs-params">(models.Model)</span>:</span>
+    name = models.CharField(max_length=<span class="hljs-number">100</span>)
+    teachers = models.ManyToManyField(Teacher, related_name=<span class="hljs-string">'students'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.name
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Student
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">student_list</span><span class="hljs-params">(request)</span>:</span>
+    students = Student.objects.prefetch_related(<span class="hljs-string">'teachers'</span>)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'student_list.html'</span>, {<span class="hljs-string">'students'</span>: students})
+</div></code></pre>
+<blockquote>
+<p>In normal cases the sql query is like this</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> student;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> teacher <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">IN</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, ...);
+</div></code></pre>
+<blockquote>
+<p>But with <code>prefetch_related</code>, it becomes:</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> student;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> teacher <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> <span class="hljs-keyword">IN</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, ...);
+<span class="hljs-keyword">SELECT</span> student_teachers.teacher_id <span class="hljs-keyword">FROM</span> student_teachers <span class="hljs-keyword">WHERE</span> student_teachers.student_id <span class="hljs-keyword">IN</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, ...);
+</div></code></pre>
+</li>
+</ul>
+<h1 id="pagination">Pagination</h1>
+<p>Pagination is a way to split large datasets into smaller, manageable chunks. Django provides built-in support for pagination through the <code>Paginator</code> class.
+Here's an example of how to use pagination in Django:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.core.paginator <span class="hljs-keyword">import</span> Paginator
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Book
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">book_list</span><span class="hljs-params">(request)</span>:</span>
+    books = Book.objects.all().order_by(<span class="hljs-string">'title'</span>)  <span class="hljs-comment"># Order by is mandatory for pagination</span>
+    paginator = Paginator(books, <span class="hljs-number">10</span>)  <span class="hljs-comment"># Show 10 books per page</span>
+    page_number = request.GET.get(<span class="hljs-string">'page'</span>)
+    page_obj = paginator.get_page(page_number)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'book_list.html'</span>, {<span class="hljs-string">'page_obj'</span>: page_obj})
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">&lt;!-- book_list.html --&gt;</span>
+{% for book in page_obj %}
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ book.title }} - {{ book.author.name }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+{% endfor %}
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pagination"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"step-links"</span>&gt;</span>
+        {% if page_obj.has_previous %}
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page=1"</span>&gt;</span><span class="hljs-symbol">&amp;laquo;</span> first<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.previous_page_number }}"</span>&gt;</span>previous<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        {% endif %}
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"current"</span>&gt;</span>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        {% if page_obj.has_next %}
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.next_page_number }}"</span>&gt;</span>next<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.paginator.num_pages }}"</span>&gt;</span>last <span class="hljs-symbol">&amp;raquo;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>
+        {% <span class="hljs-attr">endif</span> %}
+    &lt;/<span class="hljs-attr">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</div></code></pre>
+<p><img src="day10/image-3.png" alt="alt text"></p>
+<h1 id="class-based-views-pagination">Class-Based Views Pagination</h1>
+<p>Django's class-based views also support pagination. You can use the <code>ListView</code> class to handle pagination automatically.
+Here's an example:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.views.generic <span class="hljs-keyword">import</span> ListView
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Book
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookListView</span><span class="hljs-params">(ListView)</span>:</span>
+    model = Book
+    template_name = <span class="hljs-string">'book_list.html'</span>
+    context_object_name = <span class="hljs-string">'books'</span>
+    paginate_by = <span class="hljs-number">10</span>  <span class="hljs-comment"># Show 10 books per page</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_queryset</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> Book.objects.all().order_by(<span class="hljs-string">'title'</span>)  <span class="hljs-comment"># Order by is mandatory for pagination</span>
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-comment">&lt;!-- book_list.html --&gt;</span>
+{% for book in books %} 
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ book.title }} - {{ book.author.name }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+{% endfor %}
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"pagination"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"step-links"</span>&gt;</span>
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page=1"</span>&gt;</span><span class="hljs-symbol">&amp;laquo;</span> first<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.previous_page_number }}"</span>&gt;</span>previous<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+            {% endif %}
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"current"</span>&gt;</span>
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            {% if page_obj.has_next %}
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.next_page_number }}"</span>&gt;</span>next<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"?page={{ page_obj.paginator.num_pages }}"</span>&gt;</span>last <span class="hljs-symbol">&amp;raquo;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>
+            {% <span class="hljs-attr">endif</span> %}
+        {% <span class="hljs-attr">endif</span> %}
+    &lt;/<span class="hljs-attr">span</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</div></code></pre>
+<h1 id="logging-in-django">Logging in Django</h1>
+<p>Django provides a built-in logging framework that allows you to log messages from your application. You can configure logging in your <code>settings.py</code> file.
+Here's an example of how to set up logging:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+<span class="hljs-keyword">import</span> os
+LOGGING = {
+    <span class="hljs-string">'version'</span>: <span class="hljs-number">1</span>, <span class="hljs-comment"># The version of the logging configuration schema</span>
+    <span class="hljs-string">'disable_existing_loggers'</span>: <span class="hljs-literal">False</span>, <span class="hljs-comment"># Whether to disable existing loggers</span>
+    <span class="hljs-string">'formatters'</span>: {
+        <span class="hljs-string">'standard'</span>: {
+            <span class="hljs-string">'format'</span>: <span class="hljs-string">'{levelname} {name} {lineno} {asctime} {pathname} {module} {funcname} {filename} {message}'</span>,
+            <span class="hljs-string">'style'</span>: <span class="hljs-string">'{'</span>,
+            <span class="hljs-comment"># 'format': '$levelname $name $lineno $asctime $pathname $module $funcname $filename $message',</span>
+            <span class="hljs-comment">#'style': '$',</span>
+        },
+        <span class="hljs-comment"># </span>
+        <span class="hljs-string">'simple'</span>: {
+            <span class="hljs-string">'format'</span>: <span class="hljs-string">'{levelname} {lineno} {asctime} {filename} {message}'</span>,
+            <span class="hljs-string">'style'</span>: <span class="hljs-string">'{'</span>,
+        },
+    },
+    handlers = {
+        <span class="hljs-string">'console'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,  <span class="hljs-comment"># Set the logging level</span>
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.StreamHandler'</span>,  <span class="hljs-comment"># Use StreamHandler to log to console</span>
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,  <span class="hljs-comment"># Use the standard formatter</span>
+        },
+        <span class="hljs-string">'file'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'ERROR'</span>,
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.FileHandler'</span>,
+            <span class="hljs-string">'filename'</span>: os.path.join(BASE_DIR, <span class="hljs-string">'django.log'</span>),  <span class="hljs-comment"># Log to a file</span>
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,
+        },
+    },
+    <span class="hljs-string">'loggers'</span>: {
+        <span class="hljs-string">''</span>: {
+            <span class="hljs-string">'handlers'</span>: [<span class="hljs-string">'console'</span>, <span class="hljs-string">'file'</span>],
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'propagate'</span>: <span class="hljs-literal">False</span>,
+        },
+        <span class="hljs-string">'app_name'</span>: {  <span class="hljs-comment"># Replace 'app_name' with your app's name</span>
+            <span class="hljs-string">'handlers'</span>: [<span class="hljs-string">'console'</span>, <span class="hljs-string">'file'</span>],
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'propagate'</span>: <span class="hljs-literal">True</span>,  <span class="hljs-comment"># Propagate messages to the root logger</span>
+        },
+    }
+}
+</div></code></pre>
+<p>You can then use the logging module in your views or other parts of your application:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">import</span> logging
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">my_view</span><span class="hljs-params">(request)</span>:</span>
+    logger = logging.getLogger(__name__)
+    logger.debug(<span class="hljs-string">"This is a debug message"</span>)
+    logger.info(<span class="hljs-string">"This is an info message"</span>)
+    logger.warning(<span class="hljs-string">"This is a warning message"</span>)
+    logger.error(<span class="hljs-string">"This is an error message"</span>)
+    logger.critical(<span class="hljs-string">"This is a critical message"</span>)
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">'my_template.html'</span>)
+</div></code></pre>
+<p>Now this log file will eventually become large, so you can use the <code>RotatingFileHandler</code>, <code>timed rotating file handler</code>, or <code>watchdog</code> to manage the log file size and rotation.</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># settings.py</span>
+<span class="hljs-keyword">from</span> logging.handlers <span class="hljs-keyword">import</span> RotatingFileHandler, TimedRotatingFileHandler
+
+LOGGING = {
+    <span class="hljs-string">'version'</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-string">'disable_existing_loggers'</span>: <span class="hljs-literal">False</span>,
+    <span class="hljs-string">'formatters'</span>: {
+        <span class="hljs-string">'standard'</span>: {
+            <span class="hljs-string">'format'</span>: (
+                <span class="hljs-string">'{levelname} {name} {lineno} {asctime} '</span>
+                <span class="hljs-string">'{pathname} {module} {funcName} {filename} {message}'</span>
+            ),
+            <span class="hljs-string">'style'</span>: <span class="hljs-string">'{'</span>,
+        },
+        <span class="hljs-string">'simple'</span>: {
+            <span class="hljs-string">'format'</span>: <span class="hljs-string">'{levelname} {lineno} {asctime} {filename} {message}'</span>,
+            <span class="hljs-string">'style'</span>: <span class="hljs-string">'{'</span>,
+        },
+    },
+    <span class="hljs-string">'handlers'</span>: {
+        <span class="hljs-string">'console'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.StreamHandler'</span>,
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,
+        },
+        <span class="hljs-string">'file'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'ERROR'</span>,
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.FileHandler'</span>,
+            <span class="hljs-string">'filename'</span>: os.path.join(BASE_DIR, <span class="hljs-string">'django.log'</span>),
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,
+        },
+        <span class="hljs-string">'rotating_file'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.handlers.RotatingFileHandler'</span>,
+            <span class="hljs-string">'filename'</span>: os.path.join(BASE_DIR, <span class="hljs-string">'django.log'</span>),
+            <span class="hljs-string">'maxBytes'</span>: <span class="hljs-number">5</span> * <span class="hljs-number">1024</span> * <span class="hljs-number">1024</span>,  <span class="hljs-comment"># 5 MB</span>
+            <span class="hljs-string">'backupCount'</span>: <span class="hljs-number">5</span>,
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,
+        },
+        <span class="hljs-string">'timed_rotating_file'</span>: {
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'class'</span>: <span class="hljs-string">'logging.handlers.TimedRotatingFileHandler'</span>,
+            <span class="hljs-string">'filename'</span>: os.path.join(BASE_DIR, <span class="hljs-string">'django_timed.log'</span>),
+            <span class="hljs-string">'when'</span>: <span class="hljs-string">'midnight'</span>,
+            <span class="hljs-string">'backupCount'</span>: <span class="hljs-number">7</span>,
+            <span class="hljs-string">'formatter'</span>: <span class="hljs-string">'standard'</span>,
+        },
+    },
+    <span class="hljs-string">'loggers'</span>: {
+        <span class="hljs-comment"># catch‑all logger</span>
+        <span class="hljs-string">''</span>: {
+            <span class="hljs-string">'handlers'</span>: [<span class="hljs-string">'console'</span>, <span class="hljs-string">'rotating_file'</span>],
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'propagate'</span>: <span class="hljs-literal">False</span>,
+        },
+        <span class="hljs-comment"># your app logger</span>
+        <span class="hljs-string">'app_name'</span>: {
+            <span class="hljs-string">'handlers'</span>: [<span class="hljs-string">'console'</span>, <span class="hljs-string">'timed_rotating_file'</span>],
+            <span class="hljs-string">'level'</span>: <span class="hljs-string">'DEBUG'</span>,
+            <span class="hljs-string">'propagate'</span>: <span class="hljs-literal">True</span>,
+        },
+    },
+}
+</div></code></pre>
 
 </body>
 </html>
